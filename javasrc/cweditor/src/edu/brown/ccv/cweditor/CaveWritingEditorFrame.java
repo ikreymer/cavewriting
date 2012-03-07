@@ -1,25 +1,53 @@
 package edu.brown.ccv.cweditor;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
+import java.io.IOException;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class CaveWritingEditorFrame extends JFrame implements WindowListener {
-	private static final long serialVersionUID = 1151513687984553951L;
+	JTabbedPane tabs;
 	
 	public CaveWritingEditorFrame() {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
+		setJMenuBar(new CaveWritingEditorMenuBar());
+		
+		trySettingIcon();
+		
+		tabs = new JTabbedPane();
+		tabs.addTab("Project 1", makeClosableTab());
+		tabs.addTab("Project 2", makeClosableTab());
+		add(tabs);
+		
+		pack();
+	}
+	
+	private JComponent makeClosableTab() {
+		JButton closeButton = new JButton("Close");
+		closeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tabs.remove(tabs.getSelectedIndex());
+			}
+		});
+		
+		JPanel ret = new JPanel();
+		ret.setLayout(new BoxLayout(ret, BoxLayout.LINE_AXIS));
+		ret.add(closeButton);
+		
+		return ret;
 	}
 
-	@Override
-    public void windowActivated(WindowEvent arg0) {
-    }
-
-	@Override
-    public void windowClosed(WindowEvent arg0) {
+	private void trySettingIcon() {
+		try {
+	        setIconImage(ImageIO.read(getClass().getResource("resources/appicon_120x90.gif")));
+        } catch (IOException e) {
+	        System.err.println("Failed to set icon!");
+	        e.printStackTrace();
+        }
     }
 
 	@Override
@@ -35,20 +63,10 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 		}
     }
 
-	@Override
-    public void windowDeactivated(WindowEvent arg0) {
-    }
-
-	@Override
-    public void windowDeiconified(WindowEvent arg0) {
-    }
-
-	@Override
-    public void windowIconified(WindowEvent arg0) {
-    }
-
-	@Override
-    public void windowOpened(WindowEvent arg0) {
-    }
-
+	@Override public void windowActivated(WindowEvent arg0) {}
+	@Override public void windowClosed(WindowEvent arg0) {}
+	@Override public void windowDeactivated(WindowEvent arg0) {}
+	@Override public void windowDeiconified(WindowEvent arg0) {}
+	@Override public void windowIconified(WindowEvent arg0) {}
+	@Override public void windowOpened(WindowEvent arg0) {}
 }
