@@ -1,5 +1,7 @@
 package edu.brown.ccv.cweditor;
 
+import java.awt.Dimension;
+
 import javax.swing.UIManager;
 
 public class Main {
@@ -11,6 +13,8 @@ public class Main {
 		}
 		
 		CaveWritingEditorFrame frame = new CaveWritingEditorFrame();
+		frame.setMinimumSize(new Dimension(300, 200));
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 }

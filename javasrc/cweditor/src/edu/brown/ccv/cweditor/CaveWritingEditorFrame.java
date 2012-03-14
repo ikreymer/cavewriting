@@ -1,7 +1,7 @@
 package edu.brown.ccv.cweditor;
 
 import java.awt.event.*;
-import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,6 +11,8 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 	JTabbedPane tabs;
 	
 	public CaveWritingEditorFrame() {
+		super("Cave Writing Text Editor");
+		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
 		setJMenuBar(new CaveWritingEditorMenuBar());
@@ -43,8 +45,9 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 
 	private void trySettingIcon() {
 		try {
-	        setIconImage(ImageIO.read(getClass().getResource("resources/appicon_120x90.gif")));
-        } catch (IOException e) {
+    		URL url = getClass().getResource("resources/appicon_120x90.gif");
+	        setIconImage(ImageIO.read(url));
+        } catch (Exception e) {
 	        System.err.println("Failed to set icon!");
 	        e.printStackTrace();
         }
@@ -57,6 +60,7 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 			dispose();
 			break;
 		case JOptionPane.NO_OPTION:
+		case JOptionPane.CANCEL_OPTION:
 			break;
 		default:
 			throw new UnsupportedOperationException("Bad value returned from window closing dialog?");
