@@ -1,5 +1,7 @@
 package edu.brown.ccv.cweditor.story;
 
+import java.util.List;
+
 public class Global {
 	Camera desktopCamera, caveCamera;
 	Color backgroundColor;
@@ -12,6 +14,24 @@ public class Global {
 	    this.backgroundColor = backgroundColor;
 	    this.allowWandRotation = allowWandRotation;
 	    this.allowWandMovement = allowWandMovement;
+    }
+
+	public Global(List<NamedPlacement> placements) {
+	    this(new Camera(new Placement(getPlacement("Center", placements), new Vector3(0, 0, 6), null), 100.0), new Camera(new Placement(getPlacement("Center", placements), new Vector3(0, 0, 0), null), 100.0), new Color(0, 0, 0), false, false);
+    }
+
+	private static NamedPlacement getPlacement(String string, List<NamedPlacement> placements) {
+		NamedPlacement relativePlacement = null;
+		for (NamedPlacement namedPlacement : placements) {
+			if (namedPlacement.getName().equals(string)) {
+				relativePlacement = namedPlacement;
+				break;
+			}
+		}
+		if (relativePlacement == null) {
+			throw new IllegalArgumentException("Could not find placement \""+string+"\" while creating a default Global object");
+		}
+		return relativePlacement;
     }
 
 	public Color getBackgroundColor() {

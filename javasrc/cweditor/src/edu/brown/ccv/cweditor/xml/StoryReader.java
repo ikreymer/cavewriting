@@ -24,8 +24,14 @@ public class StoryReader {
 			throw new XMLParseException("Root element was not a Story");
 		}
 		
-		Global globals = readGlobal(getElement(root, "Global"));
 		Element tempElement;
+		
+		List<NamedPlacement> placements = new ArrayList<NamedPlacement>();
+		if ((tempElement = root.element("PlacementRoot")) != null) {
+			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Placement"); it.hasNext();) {
+				placements.add(readNamedPlacement(it.next(), placements));
+			}
+		}
 		
 		List<StoryObject> objects = new ArrayList<StoryObject>();
 		if ((tempElement = root.element("ObjectRoot")) != null) {
@@ -45,13 +51,6 @@ public class StoryReader {
 		if ((tempElement = root.element("TimelineRoot")) != null) {
 			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Timeline"); it.hasNext();) {
 				timelines.add(readTimeline(it.next()));
-			}
-		}
-		
-		List<NamedPlacement> placements = new ArrayList<NamedPlacement>();
-		if ((tempElement = root.element("PlacementRoot")) != null) {
-			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Placement"); it.hasNext();) {
-				placements.add(readNamedPlacement(it.next()));
 			}
 		}
 		
@@ -76,6 +75,8 @@ public class StoryReader {
 			}
 		}
 		
+		Global globals = readGlobal(getElement(root, "Global"), placements);
+		
 		Attribute lastXPath = root.attribute("last_xpath");
 		return new Story(objects, groups, timelines, placements, sounds, events, particleActions, globals, getStringAttribute(root, "version"), lastXPath == null ? null : lastXPath.getValue());
 	}
@@ -92,22 +93,52 @@ public class StoryReader {
 	    return null;
     }
 
+	/*
+	 * EVENT------------------------------------------------------------------------------------------------
+	 */
 	private static Event readEvent(Element next) throws XMLParseException {
 	    return null;
     }
 
+	/*
+	 * EVENT------------------------------------------------------------------------------------------------
+	 */
 	private static Sound readSound(Element next) throws XMLParseException {
 	    return null;
     }
 
-	private static NamedPlacement readNamedPlacement(Element next) throws XMLParseException {
-		return null;
+	/*
+	 * PLACEMENT--------------------------------------------------------------------------------------------
+	 */
+	private static NamedPlacement readNamedPlacement(Element next, List<NamedPlacement> placements) throws XMLParseException {
+		Placement temp = readPlacement(next, placements);
+		
+		String name = getStringAttribute(next, "name");
+		
+		NamedPlacement relativeTo = temp.getRelativeTo();
+		NamedPlacement ret = new NamedPlacement(relativeTo, temp.getPosition(), temp.getRotation(), name);
+		
+		if (relativeTo == null) {
+			if (getElementTextString(next, "RelativeTo").equals(name)) {
+				ret.setRelativeTo(ret); // hack for center being relative to center
+			} else {
+				throw new XMLParseException("Could not find RelativeTo placement: "+relativeTo);
+			}
+		}
+		
+		return ret;
 	}
 
+	/*
+	 * TIMELINE---------------------------------------------------------------------------------------------
+	 */
 	private static Timeline readTimeline(Element next) throws XMLParseException {
 	    return null;
     }
 
+	/*
+	 * GROUP------------------------------------------------------------------------------------------------
+	 */
 	private static Group readGroup(Element next) throws XMLParseException {
 	    return null;
     }
@@ -124,9 +155,9 @@ public class StoryReader {
 	 * GLOBAL-----------------------------------------------------------------------------------------------
 	 */
 
-	private static Global readGlobal(Element element) throws XMLParseException {
-		Camera desktopCamera = readCamera(getElement(element, "CameraPos"));
-		Camera caveCamera = readCamera(getElement(element, "CaveCameraPos"));
+	private static Global readGlobal(Element element, List<NamedPlacement> placements) throws XMLParseException {
+		Camera desktopCamera = readCamera(getElement(element, "CameraPos"), placements);
+		Camera caveCamera = readCamera(getElement(element, "CaveCameraPos"), placements);
 		
 		Color backgroundColor = parseColor(getStringAttribute(getElement(element, "Background"), "color"));
 		
@@ -137,8 +168,8 @@ public class StoryReader {
 		return new Global(desktopCamera, caveCamera, backgroundColor, allowWandRotation, allowWandMovement);
 	}
 	
-	private static Camera readCamera(Element element) throws XMLParseException {
-		Placement placement = readPlacement(getElement(element, "Placement"));
+	private static Camera readCamera(Element element, List<NamedPlacement> placements) throws XMLParseException {
+		Placement placement = readPlacement(getElement(element, "Placement"), placements);
 		double farClip = getDoubleAttribute(element, "far-clip");
 		
 		return new Camera(placement, farClip);
@@ -148,8 +179,62 @@ public class StoryReader {
 	 * HELPER-----------------------------------------------------------------------------------------------
 	 */
 	
-	private static Placement readPlacement(Element next) throws XMLParseException {
-		return null;
+	private static Placement readPlacement(Element next, List<NamedPlacement> placements) throws XMLParseException {
+		return readPlacement(next, placements, false);
+	}
+	
+	private static Placement readPlacement(Element next, List<NamedPlacement> placements, boolean allowLookupFailure) throws XMLParseException {
+		String relativeTo = getElementTextString(next, "RelativeTo");
+		NamedPlacement relativePlacement = null;
+		for (NamedPlacement namedPlacement : placements) {
+			if (namedPlacement.getName().equals(relativeTo)) {
+				relativePlacement = namedPlacement;
+				break;
+			}
+		}
+		if (relativePlacement == null && !allowLookupFailure) {
+			throw new XMLParseException("Could not find RelativeTo placement: "+relativeTo);
+		}
+		
+		Vector3 position = parseVector3(getElementTextString(next, "Position"));
+		
+		Rotation rotation = null;
+		
+		Element rotationElement;
+		if ((rotationElement = next.element("Axis")) != null) {
+			rotation = new Rotation.Axis(parseVector3(getStringAttribute(rotationElement, "rotation")), getDoubleAttribute(rotationElement, "angle"));
+		} else if ((rotationElement = next.element("Normal")) != null) {
+			rotation = new Rotation.Normal(parseVector3(getStringAttribute(rotationElement, "normal")), getDoubleAttribute(rotationElement, "angle"));
+		} else if ((rotationElement = next.element("LookAt")) != null) {
+			rotation = new Rotation.LookAt(parseVector3(getStringAttribute(rotationElement, "target")), parseVector3(getStringAttribute(rotationElement, "up")));
+		}
+		
+		return new Placement(relativePlacement, position, rotation);
+	}
+	
+	private static Vector3 parseVector3(String text) throws XMLParseException {
+		text = text.trim();
+		if (text.length() < 1) {
+			throw new XMLParseException("Empty text for vector");
+		}
+		if (text.charAt(0) != '(' || text.charAt(text.length()-1) != ')') {
+			throw new XMLParseException("Vector not surrounded in parens");
+		}
+		text = text.substring(1, text.length()-1);
+		
+		String[] components = text.split(",");
+		if (components.length != 3)
+			throw new XMLParseException("Vector did not have three components");
+		
+		try {
+			double x = Double.parseDouble(components[0]);
+			double y = Double.parseDouble(components[1]);
+			double z = Double.parseDouble(components[2]);
+			
+			return new Vector3(x, y, z);
+		} catch (NumberFormatException e) {
+			throw new XMLParseException("Invalid vector component");
+		}
 	}
 	
 	private static Color parseColor(String text) throws XMLParseException {

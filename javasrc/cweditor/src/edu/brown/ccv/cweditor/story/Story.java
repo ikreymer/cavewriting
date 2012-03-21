@@ -15,6 +15,39 @@ public class Story {
 	String version;
 	String lastXpath;
 	
+	public Story() {
+		this.objects = new ArrayList<StoryObject>();
+		this.groups = new ArrayList<Group>();
+		this.timelines = new ArrayList<Timeline>();
+		this.placements = createDefaultPlacements();
+		this.sounds = new ArrayList<Sound>();
+		this.events = new ArrayList<Event>();
+		this.particleActions = new ArrayList<ParticleAction>();
+		this.globals = new Global(this.placements);
+		this.version = "8";
+		this.lastXpath = null;
+	}
+	
+	private static List<NamedPlacement> createDefaultPlacements() {
+		ArrayList<NamedPlacement> ret = new ArrayList<NamedPlacement>();
+	    
+		NamedPlacement center = new NamedPlacement(null, new Vector3(0,0,0), new Rotation.Axis(new Vector3(0, 1, 0), 0), "Center");
+	    center.setRelativeTo(center);
+	    
+	    NamedPlacement frontWall = new NamedPlacement(null, new Vector3(0,0,-4), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1, 0)), "Center");
+	    NamedPlacement leftWall = new NamedPlacement(null, new Vector3(-4,0,0), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1, 0)), "Center");
+	    NamedPlacement rightWall = new NamedPlacement(null, new Vector3(4,0,0), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1, 0)), "Center");
+	    NamedPlacement floorWall = new NamedPlacement(null, new Vector3(0,-4,0), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 0, -1)), "Center");
+	    
+	    ret.add(center);
+	    ret.add(frontWall);
+	    ret.add(leftWall);
+	    ret.add(rightWall);
+	    ret.add(floorWall);
+	    
+		return ret;
+    }
+
 	public Story(List<StoryObject> objects, List<Group> groups, List<Timeline> timelines, List<NamedPlacement> placements, List<Sound> sounds, List<Event> events, List<ParticleAction> particleActions, Global globals, String version, String lastXpath) {
 	    this.objects = objects;
 	    this.groups = groups;
