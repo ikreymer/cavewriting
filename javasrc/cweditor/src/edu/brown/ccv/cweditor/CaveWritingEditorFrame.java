@@ -1,5 +1,6 @@
 package edu.brown.ccv.cweditor;
 
+import java.awt.Component;
 import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
@@ -15,9 +16,10 @@ import edu.brown.ccv.cweditor.xml.*;
 public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 	JTabbedPane tabs;
 	
-	
 	NewAction newAction = new NewAction(this);
 	OpenAction openAction = new OpenAction(this);
+	CloseAction closeAction = new CloseAction(this);
+	QuitAction quitAction = new QuitAction(this);
 	
 	public CaveWritingEditorFrame() {
 		super("Cave Writing Text Editor");
@@ -30,6 +32,7 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 		
 		tabs = new JTabbedPane();
 		add(tabs);
+		newAction.actionPerformed(null);
 		
 		pack();
 	}
@@ -57,6 +60,21 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 	
 	private void openStoryTab(CaveWritingEditorStoryTab tab) {
 		tabs.addTab(tab.getTabTitle(), tab);
+	}
+	
+	public void closeCurrentTab() {
+		Component c = tabs.getSelectedComponent();
+		if (c == null)
+			return;
+		
+		if (c instanceof CaveWritingEditorStoryTab) {
+			CaveWritingEditorStoryTab tab = (CaveWritingEditorStoryTab) c;
+			if (!tab.prepareToClose()) {
+				return;
+			}
+		}
+		
+		tabs.remove(c);
 	}
 
 	private void trySettingIcon() {
@@ -91,16 +109,7 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 
 	@Override
     public void windowClosing(WindowEvent arg0) {
-		switch (JOptionPane.showConfirmDialog(this, "Really quit?", "Are you sure you want to quit?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)) {
-		case JOptionPane.YES_OPTION:
-			dispose();
-			break;
-		case JOptionPane.NO_OPTION:
-		case JOptionPane.CANCEL_OPTION:
-			break;
-		default:
-			throw new UnsupportedOperationException("Bad value returned from window closing dialog?");
-		}
+		quitAction.actionPerformed(null);
     }
 
 	@Override public void windowActivated(WindowEvent arg0) {}

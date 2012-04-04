@@ -21,5 +21,16 @@ public class CaveWritingEditorStoryTab extends JPanel {
 	public String getTabTitle() {
 	    return file == null ? "Untitled" : file.getName();
     }
+
+	/**
+	 * Should be called when the tab is about to be closed. If it returns false,
+	 * the user likely had unsaved changes and clicked "cancel" on the dialog
+	 * that showed up.
+	 * 
+	 * @return true if the tab can be closed, false if it should not be closed
+	 */
+	public boolean prepareToClose() {
+	    return true;
+    }
 	
 }

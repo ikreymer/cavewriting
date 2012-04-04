@@ -54,6 +54,9 @@ public class CaveWritingEditorMenuBar extends JMenuBar {
 	    
 	    ret.add(frame.newAction);
 	    ret.add(frame.openAction);
+	    ret.addSeparator();
+	    ret.add(frame.closeAction);
+	    ret.addSeparator();
 	    ret.add(new JMenuItem("Save"));
 	    ret.add(new JMenuItem("Save As..."));
 	    ret.addSeparator();
