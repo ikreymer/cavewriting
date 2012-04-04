@@ -6,8 +6,11 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class CaveWritingEditorMenuBar extends JMenuBar {
+	CaveWritingEditorFrame frame;
 	
-	public CaveWritingEditorMenuBar() {
+	public CaveWritingEditorMenuBar(CaveWritingEditorFrame frame) {
+		this.frame = frame;
+		
 	    JMenu file = createFileMenu();
 	    JMenu edit = createEditMenu();
 	    JMenu run = createRunMenu();
@@ -49,8 +52,8 @@ public class CaveWritingEditorMenuBar extends JMenuBar {
 	    JMenu ret = new JMenu("File");
 	    ret.setMnemonic(KeyEvent.VK_F);
 	    
-	    ret.add(new JMenuItem("New"));
-	    ret.add(new JMenuItem("Open..."));
+	    ret.add(frame.newAction);
+	    ret.add(frame.openAction);
 	    ret.add(new JMenuItem("Save"));
 	    ret.add(new JMenuItem("Save As..."));
 	    ret.addSeparator();
