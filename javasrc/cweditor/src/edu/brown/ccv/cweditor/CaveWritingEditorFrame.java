@@ -22,7 +22,7 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 	QuitAction quitAction = new QuitAction(this);
 	
 	public CaveWritingEditorFrame() {
-		super("Cave Writing Text Editor");
+		super(Main.APPLICATION_NAME);
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
@@ -119,7 +119,7 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 	@Override public void windowIconified(WindowEvent arg0) {}
 	@Override public void windowOpened(WindowEvent arg0) {}
 
-	// for testing - can be removed eventually
+	// useful for testing - can be removed eventually though
 //	private JComponent makeClosableTab() {
 //		JButton closeButton = new JButton("Close");
 //		closeButton.addActionListener(new ActionListener() {

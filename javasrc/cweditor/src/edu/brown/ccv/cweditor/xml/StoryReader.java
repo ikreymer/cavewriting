@@ -28,8 +28,19 @@ public class StoryReader {
 		
 		List<NamedPlacement> placements = new ArrayList<NamedPlacement>();
 		if ((tempElement = root.element("PlacementRoot")) != null) {
+			List<Element> deferredProcessing = new ArrayList<Element>();
+
+			// first process nodes that are relative to themselves, add others to deferred processing list
 			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Placement"); it.hasNext();) {
-				placements.add(readNamedPlacement(it.next(), placements));
+				Element e = it.next();
+				if (getStringAttribute(e, "name").equals(getElementTextString(e, "RelativeTo")))
+					placements.add(readNamedPlacement(e, placements));
+				else
+					deferredProcessing.add(e);
+			}
+			
+			for (Element e : deferredProcessing) {
+				placements.add(readNamedPlacement(e, placements));
 			}
 		}
 		
@@ -78,7 +89,7 @@ public class StoryReader {
 		Global globals = readGlobal(getElement(root, "Global"), placements);
 		
 		Attribute lastXPath = root.attribute("last_xpath");
-		return new Story(objects, groups, timelines, placements, sounds, events, particleActions, globals, getStringAttribute(root, "version"), lastXPath == null ? null : lastXPath.getValue());
+		return new Story(objects, groups, timelines, placements, sounds, events, particleActions, globals, root.attributeValue("version"), lastXPath == null ? null : lastXPath.getValue());
 	}
 	
 	/*
@@ -111,7 +122,7 @@ public class StoryReader {
 	 * PLACEMENT--------------------------------------------------------------------------------------------
 	 */
 	private static NamedPlacement readNamedPlacement(Element next, List<NamedPlacement> placements) throws XMLParseException {
-		Placement temp = readPlacement(next, placements);
+		Placement temp = readPlacement(next, placements, true);
 		
 		String name = getStringAttribute(next, "name");
 		
@@ -120,7 +131,7 @@ public class StoryReader {
 		
 		if (relativeTo == null) {
 			if (getElementTextString(next, "RelativeTo").equals(name)) {
-				ret.setRelativeTo(ret); // hack for center being relative to center
+				ret.setRelativeTo(ret);
 			} else {
 				throw new XMLParseException("Could not find RelativeTo placement: "+relativeTo);
 			}
@@ -227,9 +238,9 @@ public class StoryReader {
 			throw new XMLParseException("Vector did not have three components");
 		
 		try {
-			double x = Double.parseDouble(components[0]);
-			double y = Double.parseDouble(components[1]);
-			double z = Double.parseDouble(components[2]);
+			double x = Double.parseDouble(components[0].trim());
+			double y = Double.parseDouble(components[1].trim());
+			double z = Double.parseDouble(components[2].trim());
 			
 			return new Vector3(x, y, z);
 		} catch (NumberFormatException e) {
@@ -243,9 +254,9 @@ public class StoryReader {
 			throw new XMLParseException("Color did not have three components");
 		
 		try {
-			int r = Integer.parseInt(components[0]);
-			int g = Integer.parseInt(components[1]);
-			int b = Integer.parseInt(components[2]);
+			int r = Integer.parseInt(components[0].trim());
+			int g = Integer.parseInt(components[1].trim());
+			int b = Integer.parseInt(components[2].trim());
 			
 			return new Color(r, g, b);
 		} catch (Exception e) {

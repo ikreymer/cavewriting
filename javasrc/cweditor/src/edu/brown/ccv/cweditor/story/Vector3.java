@@ -36,4 +36,9 @@ public class Vector3 {
 	public void setZ(double z) {
     	this.z = z;
     }
+	
+	@Override
+	public String toString() {
+		return String.format("(%f, %f, %f)", x, y, z);
+	}
 }

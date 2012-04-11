@@ -7,6 +7,18 @@ import org.dom4j.Element;
  * parser classes.
  */
 public class XMLUtilities {
+	public static boolean addStringAttributeIfNotNull(Element element, String attributeName, String value) {
+		if (value == null)
+			return false;
+		
+		element.addAttribute(attributeName, value);
+		return true;
+	}
+	
+	public static void addDoubleAttribute(Element element, String attributeName, double value) {
+		element.addAttribute(attributeName, Double.toString(value));
+	}
+	
 	// Attribute helper methods
 	
 	public static String getStringAttribute(Element element, String attributeName) throws XMLParseException {

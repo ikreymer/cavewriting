@@ -15,16 +15,13 @@ public class CaveWritingEditorMenuBar extends JMenuBar {
 	    JMenu edit = createEditMenu();
 	    JMenu run = createRunMenu();
 	    
-	    add(Box.createHorizontalStrut(3));
 	    add(file);
-	    add(Box.createHorizontalStrut(5));
 	    add(edit);
-	    add(Box.createHorizontalStrut(5));
 	    add(run);
     }
 	
 	protected JMenu createRunMenu() {
-		JMenu ret = new JMenu("Run");
+		JMenu ret = new JMenu(" Run ");
 		ret.setMnemonic(KeyEvent.VK_R);
 		
 		ret.add(new JMenuItem("Windowed Preview"));
@@ -36,7 +33,7 @@ public class CaveWritingEditorMenuBar extends JMenuBar {
 	}
 
 	protected JMenu createEditMenu() {
-		JMenu ret = new JMenu("Edit");
+		JMenu ret = new JMenu(" Edit ");
 		ret.setMnemonic(KeyEvent.VK_E);
 		
 		ret.add(new JMenuItem("Cut"));
@@ -49,7 +46,7 @@ public class CaveWritingEditorMenuBar extends JMenuBar {
     }
 
 	protected JMenu createFileMenu() {
-	    JMenu ret = new JMenu("File");
+	    JMenu ret = new JMenu(" File ");
 	    ret.setMnemonic(KeyEvent.VK_F);
 	    
 	    ret.add(frame.newAction);
@@ -60,7 +57,7 @@ public class CaveWritingEditorMenuBar extends JMenuBar {
 	    ret.add(new JMenuItem("Save"));
 	    ret.add(new JMenuItem("Save As..."));
 	    ret.addSeparator();
-	    ret.add(new JMenuItem("Quit"));
+	    ret.add(frame.quitAction);
 	    
 	    return ret;
     }
