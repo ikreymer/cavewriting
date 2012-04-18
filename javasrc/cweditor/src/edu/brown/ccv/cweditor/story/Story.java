@@ -34,10 +34,10 @@ public class Story {
 		NamedPlacement center = new NamedPlacement(null, new Vector3(0,0,0), new Rotation.Axis(new Vector3(0, 1, 0), 0), "Center");
 	    center.setRelativeTo(center);
 	    
-	    NamedPlacement frontWall = new NamedPlacement(null, new Vector3(0,0,-4), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1, 0)), "Center");
-	    NamedPlacement leftWall = new NamedPlacement(null, new Vector3(-4,0,0), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1, 0)), "Center");
-	    NamedPlacement rightWall = new NamedPlacement(null, new Vector3(4,0,0), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1, 0)), "Center");
-	    NamedPlacement floorWall = new NamedPlacement(null, new Vector3(0,-4,0), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 0, -1)), "Center");
+	    NamedPlacement frontWall = new NamedPlacement(center, new Vector3(0,0,-4), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1, 0)), "FrontWall");
+	    NamedPlacement leftWall = new NamedPlacement(center, new Vector3(-4,0,0), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1, 0)), "LeftWall");
+	    NamedPlacement rightWall = new NamedPlacement(center, new Vector3(4,0,0), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1, 0)), "RightWall");
+	    NamedPlacement floorWall = new NamedPlacement(center, new Vector3(0,-4,0), new Rotation.LookAt(new Vector3(0, 0, 0), new Vector3(0, 0, -1)), "FloorWall");
 	    
 	    ret.add(center);
 	    ret.add(frontWall);

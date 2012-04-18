@@ -39,6 +39,9 @@ public class Vector3 {
 	
 	@Override
 	public String toString() {
-		return String.format("(%f, %f, %f)", x, y, z);
+		// !! XML writing uses this for the moment, so change with caution
+		return "(" + Double.toString(x) + ", " + Double.toString(y) + ", " + Double.toString(z) + ")";
+		// String.format is cleaner, but Double.toString appears to have behavior closer to that of the old editor
+//		return String.format("(%f, %f, %f)", x, y, z);
 	}
 }

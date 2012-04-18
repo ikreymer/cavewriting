@@ -21,6 +21,20 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 	CloseAction closeAction = new CloseAction(this);
 	QuitAction quitAction = new QuitAction(this);
 	
+	boolean exitOnKill = false;
+	
+	public void kill() {
+		if (exitOnKill)
+			System.exit(0);
+		else
+			dispose();
+	}
+	
+	public CaveWritingEditorFrame(boolean exitOnKill) {
+		this();
+		this.exitOnKill = exitOnKill;
+	}
+	
 	public CaveWritingEditorFrame() {
 		super(Main.APPLICATION_NAME);
 		
@@ -33,6 +47,7 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 		tabs = new JTabbedPane();
 		add(tabs);
 		newAction.actionPerformed(null);
+		openStoryTab(new File("tests/everything.xml"));
 		
 		pack();
 	}
@@ -44,12 +59,13 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 	public void openStoryTab(File file) {
 		Story story = null;
 		
-		// TODO: display error to user
 		try {
 			story = StoryReader.readStory(new FileInputStream(file));
 		} catch (IOException e) {
+			// TODO: display appropriate error to user (could not read file)
 			e.printStackTrace();
 		} catch (XMLParseException e) {
+			// TODO: display appropriate error to user (invalid xml)
 	        e.printStackTrace();
         }
 		
@@ -60,6 +76,7 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 	
 	private void openStoryTab(CaveWritingEditorStoryTab tab) {
 		tabs.addTab(tab.getTabTitle(), tab);
+		tabs.setSelectedComponent(tab);
 	}
 	
 	public void closeCurrentTab() {

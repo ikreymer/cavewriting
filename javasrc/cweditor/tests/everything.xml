@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jaxfront version=2.1;time=2012-04-18 03:36:50.663;xui=jar:http://cavewriting.sourceforge.net/2006/CWEditor/cavewriting.jar!/schema/caveschema.xui;xsd=caveschema.xsd?>
+<Story version="8" last_xpath="/Story/ParticleActionRoot/ParticleActionList[1]
+">
+       <ObjectRoot>
+              <Object name="BLARG">
+                     <Visible>false</Visible>
+                     <Color>255,255,255</Color>
+                     <Lighting>false</Lighting>
+                     <ClickThrough>true</ClickThrough>
+                     <AroundSelfAxis>true</AroundSelfAxis>
+                     <Scale>2.0</Scale>
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, 2.0, 0.0)</Position>
+                     </Placement>
+                     <Content>
+                            <Text horiz-align="center" vert-align="center" font="Arial.ttf" depth="0.0">
+                                   <text>asdf</text>
+                            </Text>
+                     </Content>
+              </Object>
+              <Object name="LINK">
+                     <Visible>true</Visible>
+                     <Color>255,255,255</Color>
+                     <Lighting>false</Lighting>
+                     <ClickThrough>false</ClickThrough>
+                     <AroundSelfAxis>false</AroundSelfAxis>
+                     <Scale>1.0</Scale>
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, 0.0, 0.0)</Position>
+                                   <Normal normal="(0.0, 0.0, 1.0)" angle="20.0"/>
+                     </Placement>
+                     <Content>
+                            <Text horiz-align="left" vert-align="bottom" font="Courier.ttf" depth="2.0">
+                                   <text>LINK</text>
+                            </Text>
+                     </Content>
+                     <LinkRoot>
+                            <Link>
+                                   <Enabled>true</Enabled>
+                                   <RemainEnabled>true</RemainEnabled>
+                                   <EnabledColor>0,128,255</EnabledColor>
+                                   <SelectedColor>255,0,0</SelectedColor>
+                                   <Actions>
+                                                 <ObjectChange name="BLARG">
+                                                        <Transition duration="1.0">
+                                                               <Visible>true</Visible>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <GroupRef name="GROUP1" random="Select One Randomly">
+                                                        <Transition duration="1.0">
+                                                               <MoveRel>
+                                                                      <Placement>
+                                                                             <RelativeTo>Center</RelativeTo>
+                                                                             <Position>(0.0, 0.0, 1.0)</Position>
+                                                                                    <Normal normal="(0.0, 0.0, 1.0)" angle="30.0"/>
+                                                                      </Placement>
+                                                               </MoveRel>
+                                                        </Transition>
+                                                 </GroupRef>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                            </Link>
+                     </LinkRoot>
+              </Object>
+              <Object name="LINK2">
+                     <Visible>true</Visible>
+                     <Color>255,255,255</Color>
+                     <Lighting>false</Lighting>
+                     <ClickThrough>false</ClickThrough>
+                     <AroundSelfAxis>false</AroundSelfAxis>
+                     <Scale>1.0</Scale>
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, -4.0, 0.0)</Position>
+                                   <LookAt target="(2.0, 3.0, 4.0)" up="(0.0, 1.0, 0.0)"/>
+                     </Placement>
+                     <Content>
+                            <Text horiz-align="center" vert-align="center" font="Courier.ttf" depth="2.0">
+                                   <text>RESET THE WORLD</text>
+                            </Text>
+                     </Content>
+                     <LinkRoot>
+                            <Link>
+                                   <Enabled>true</Enabled>
+                                   <RemainEnabled>true</RemainEnabled>
+                                   <EnabledColor>0,128,255</EnabledColor>
+                                   <SelectedColor>255,0,0</SelectedColor>
+                                   <Actions>
+                                                 <Restart/>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                            </Link>
+                     </LinkRoot>
+              </Object>
+              <Object name="purteecles">
+                     <Visible>true</Visible>
+                     <Color>255,255,255</Color>
+                     <Lighting>false</Lighting>
+                     <ClickThrough>true</ClickThrough>
+                     <AroundSelfAxis>true</AroundSelfAxis>
+                     <Scale>2.0</Scale>
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, 2.0, 0.0)</Position>
+                                   <Axis rotation="(1.0, 2.0, 3.0)" angle="0.0"/>
+                     </Placement>
+                     <Content>
+                            <ParticleSystem max-particles="1000" actions-name="1" particle-group="particalls" look-at-camera="true" sequential="false" speed="1.0"/>
+                     </Content>
+              </Object>
+              <Object name="o">
+                     <Visible>true</Visible>
+                     <Color>255,255,255</Color>
+                     <Lighting>false</Lighting>
+                     <ClickThrough>false</ClickThrough>
+                     <AroundSelfAxis>false</AroundSelfAxis>
+                     <Scale>1.0</Scale>
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, 0.0, 0.0)</Position>
+                     </Placement>
+                     <Content>
+                            <Text horiz-align="center" vert-align="center" depth="0.0">
+                                   <text>o</text>
+                            </Text>
+                     </Content>
+              </Object>
+       </ObjectRoot>
+       <GroupRoot>
+              <Group name="GROUP1">
+                            <Objects name="BLARG"/>
+                            <Objects name="2"/>
+              </Group>
+              <Group name="GROUP2">
+                            <Objects name="LINK"/>
+              </Group>
+              <Group name="META?!?!">
+                            <Groups name="GROUP2"/>
+                            <Groups name="GROUP1"/>
+              </Group>
+              <Group name="particalls">
+                            <Objects name="o"/>
+              </Group>
+              <Group name="SELF-REFERENCE">
+                            <Groups name="SELF-REFERENCE"/>
+              </Group>
+       </GroupRoot>
+       <TimelineRoot>
+              <Timeline name="t1" start-immediately="true">
+                     <TimedActions seconds-time="0.0">
+                            <ObjectChange name="BLARG">
+                                   <Transition duration="2.0">
+                                          <Color>0,255,255</Color>
+                                   </Transition>
+                            </ObjectChange>
+                     </TimedActions>
+                     <TimedActions seconds-time="1.0">
+                            <TimerChange name="1">
+                                   <stop/>
+                            </TimerChange>
+                     </TimedActions>
+              </Timeline>
+       </TimelineRoot>
+       <PlacementRoot>
+              <Placement name="Center">
+                     <RelativeTo>Center</RelativeTo>
+                     <Position>(0.0, 0.0, 0.0)</Position>
+                            <Axis rotation="(0.0, 1.0, 0.0)" angle="0.0"/>
+              </Placement>
+              <Placement name="FrontWall">
+                     <RelativeTo>Center</RelativeTo>
+                     <Position>(0.0, 0.0, -4.0)</Position>
+                            <LookAt target="(0.0, 0.0, 0.0)" up="(0.0, 1.0, 0.0)"/>
+              </Placement>
+              <Placement name="LeftWall">
+                     <RelativeTo>Center</RelativeTo>
+                     <Position>(-4.0, 0.0, 0.0)</Position>
+                            <LookAt target="(0.0, 0.0, 0.0)" up="(0.0, 1.0, 0.0)"/>
+              </Placement>
+              <Placement name="RightWall">
+                     <RelativeTo>Center</RelativeTo>
+                     <Position>(4.0, 0.0, 0.0)</Position>
+                            <LookAt target="(0.0, 0.0, 0.0)" up="(0.0, 1.0, 0.0)"/>
+              </Placement>
+              <Placement name="FloorWall">
+                     <RelativeTo>Center</RelativeTo>
+                     <Position>(0.0, -4.0, 0.0)</Position>
+                            <LookAt target="(0.0, 0.0, 0.0)" up="(0.0, 0.0, -1.0)"/>
+              </Placement>
+       </PlacementRoot>
+       <SoundRoot>
+              <Sound name="BAD" filename="./testMedia/bad.mp3" autostart="false">
+                     <Mode>
+                            <Positional/>
+                     </Mode>
+                     <Repeat>
+                            <NoRepeat/>
+                     </Repeat>
+                     <Settings freq="1.0" volume="1.0" pan="0.0"/>
+              </Sound>
+       </SoundRoot>
+       <EventRoot>
+              <EventTrigger enabled="true" name="2" duration="0.0" remain-enabled="true">
+                            <HeadTrack>
+                                   <Position>
+                                          <Anywhere/>
+                                   </Position>
+                                   <Direction>
+                                          <PointTarget point="(0, 0, 0)" angle="30.0"/>
+                                   </Direction>
+                            </HeadTrack>
+                     <Actions>
+                            <ObjectChange name="purteecles">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+              </EventTrigger>
+       </EventRoot>
+       <ParticleActionRoot>
+              <ParticleActionList name="1">
+                     <Source rate="2">
+                            <ParticleDomain>
+                                   <Disc center="(0, -2, 0)" normal="(0, 1, 0)" radius="3" radius-inner="1.0"/>
+                            </ParticleDomain>
+                     </Source>
+                     <Vel>
+                            <ParticleDomain>
+                                   <Line p1="(0, 0, 0)" p2="(0, 1, 0)"/>
+                            </ParticleDomain>
+                     </Vel>
+                     <ParticleAction>
+                            <Gravity direction="(0, -1, 0)"/>
+                     </ParticleAction>
+                     <RemoveCondition>
+                            <Velocity inside="false">
+                                   <ParticleDomain>
+                                          <Line p1="(0, 0, 0)" p2="(0, -6, 0)"/>
+                                   </ParticleDomain>
+                            </Velocity>
+                     </RemoveCondition>
+              </ParticleActionList>
+       </ParticleActionRoot>
+       <Global>
+              <CameraPos far-clip="100.0">
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, 0.0, 6.0)</Position>
+                     </Placement>
+              </CameraPos>
+              <CaveCameraPos far-clip="100.0">
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, 0.0, 0.0)</Position>
+                     </Placement>
+              </CaveCameraPos>
+              <Background color="20, 30, 40"/>
+              <WandNavigation allow-rotation="false" allow-movement="false"/>
+       </Global>
+</Story>

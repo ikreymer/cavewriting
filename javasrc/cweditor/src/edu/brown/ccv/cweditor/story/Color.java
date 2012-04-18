@@ -44,6 +44,7 @@ public class Color {
 	
 	@Override
     public String toString() {
+		// !! XML writing uses this for the moment, so change with caution
 		return String.format("%d, %d, %d", r, g, b);
 	}
 	

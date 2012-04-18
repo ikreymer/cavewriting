@@ -1,7 +1,7 @@
 package edu.brown.ccv.cweditor.xml;
 
 import java.io.*;
-import java.util.List;
+import java.util.*;
 
 import org.dom4j.*;
 import org.dom4j.io.*;
@@ -28,6 +28,49 @@ public class StoryWriter {
     			writeObject(objectRoot, object);
     		}
 		}
+		
+//		List<Group> groups = new ArrayList<Group>();
+//		if ((tempElement = root.element("GroupRoot")) != null) {
+//			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Group"); it.hasNext();) {
+//				groups.add(readGroup(it.next()));
+//			}
+//		}
+//		
+//		List<Timeline> timelines = new ArrayList<Timeline>();
+//		if ((tempElement = root.element("TimelineRoot")) != null) {
+//			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Timeline"); it.hasNext();) {
+//				timelines.add(readTimeline(it.next()));
+//			}
+//		}
+		
+		List<NamedPlacement> namedPlacements;
+		if ((namedPlacements = story.getPlacements()) != null && namedPlacements.size() > 0) {
+			Element placementsRoot = root.addElement("PlacementRoot");
+    		for (NamedPlacement placement : namedPlacements) {
+    			writeNamedPlacement(placementsRoot, placement, story.getPlacements());
+    		}
+		}
+		
+//		List<Sound> sounds = new ArrayList<Sound>();
+//		if ((tempElement = root.element("SoundRoot")) != null) {
+//			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Sound"); it.hasNext();) {
+//				sounds.add(readSound(it.next()));
+//			}
+//		}
+//		
+//		List<Event> events = new ArrayList<Event>();
+//		if ((tempElement = root.element("EventRoot")) != null) {
+//			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("EventTrigger"); it.hasNext();) {
+//				events.add(readEvent(it.next()));
+//			}
+//		}
+//		
+//		List<ParticleAction> particleActions = new ArrayList<ParticleAction>();
+//		if ((tempElement = root.element("ParticleActionRoot")) != null) {
+//			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("ParticleActionList"); it.hasNext();) {
+//				particleActions.add(readParticleAction(it.next()));
+//			}
+//		}
 		
 		writeGlobal(root, story.getGlobals(), story.getPlacements());
 		
@@ -65,24 +108,8 @@ public class StoryWriter {
 	 * PLACEMENT--------------------------------------------------------------------------------------------
 	 */
 	private static void writeNamedPlacement(Element root, NamedPlacement namedPlacement, List<NamedPlacement> placements) {
-		Element element = writePlacement(root, namedPlacement);
+		Element element = writePlacement(root, namedPlacement); // most of the work is done
 		element.addAttribute("name", namedPlacement.getName());
-//		Placement temp = readPlacement(next, placements, true);
-//		
-//		String name = getStringAttribute(next, "name");
-//		
-//		NamedPlacement relativeTo = temp.getRelativeTo();
-//		NamedPlacement ret = new NamedPlacement(relativeTo, temp.getPosition(), temp.getRotation(), name);
-//		
-//		if (relativeTo == null) {
-//			if (getElementTextString(next, "RelativeTo").equals(name)) {
-//				ret.setRelativeTo(ret);
-//			} else {
-//				throw new XMLParseException("Could not find RelativeTo placement: "+relativeTo);
-//			}
-//		}
-//		
-//		return ret;
 	}
 
 	/*
@@ -114,18 +141,9 @@ public class StoryWriter {
 		writeCamera(element, "CameraPos", global.getDesktopCamera());
 		writeCamera(element, "CaveCameraPos", global.getCaveCamera());
 		
-		// TODO: FINISH
+		element.addElement("Background").addAttribute("color", global.getBackgroundColor().toString());
 		
-//		Camera desktopCamera = readCamera(getElement(element, "CameraPos"), placements);
-//		Camera caveCamera = readCamera(getElement(element, "CaveCameraPos"), placements);
-//		
-//		Color backgroundColor = parseColor(getStringAttribute(getElement(element, "Background"), "color"));
-//		
-//		Element wandNavigation = getElement(element, "WandNavigation");
-//		boolean allowWandRotation = getBooleanAttribute(wandNavigation, "allow-rotation");
-//		boolean allowWandMovement = getBooleanAttribute(wandNavigation, "allow-movement");
-//		
-//		return new Global(desktopCamera, caveCamera, backgroundColor, allowWandRotation, allowWandMovement);
+		element.addElement("WandNavigation").addAttribute("allow-rotation", Boolean.toString(global.isAllowWandRotation())).addAttribute("allow-movement", Boolean.toString(global.isAllowWandMovement()));
 	}
 	
 	private static void writeCamera(Element root, String elementName, Camera camera) {
@@ -133,10 +151,6 @@ public class StoryWriter {
 		
 		writePlacement(element, camera.getPlacement());
 		addDoubleAttribute(element, "far-clip", camera.getFarClip());
-//		Placement placement = readPlacement(getElement(element, "Placement"), placements);
-//		double farClip = getDoubleAttribute(element, "far-clip");
-//		
-//		return new Camera(placement, farClip);
 	}
 	
 	/*
@@ -150,13 +164,28 @@ public class StoryWriter {
 		element.addElement("Position").setText(placement.getPosition().toString());
 		
 		Rotation rotation = placement.getRotation();
+		
 		if (rotation != null) {
 			if (rotation.getClass() == Rotation.Axis.class) {
-				// TODO: FINISH
+				Rotation.Axis axis = (Rotation.Axis) rotation;
+				Element rotationElement = element.addElement("Axis");
+				
+				rotationElement.addAttribute("rotation", axis.getRotation().toString());
+				addDoubleAttribute(rotationElement, "angle", axis.getAngle());
+				
 			} else if (rotation.getClass() == Rotation.LookAt.class) {
+				Rotation.LookAt lookAt = (Rotation.LookAt) rotation;
+				Element rotationElement = element.addElement("LookAt");
+				
+				rotationElement.addAttribute("target", lookAt.getTarget().toString());
+				rotationElement.addAttribute("up", lookAt.getUp().toString());
 				
 			} else if (rotation.getClass() == Rotation.Normal.class) {
+				Rotation.Normal normal = (Rotation.Normal) rotation;
+				Element rotationElement = element.addElement("Normal");
 				
+				rotationElement.addAttribute("normal", normal.getNormal().toString());
+				addDoubleAttribute(rotationElement, "angle", normal.getAngle());
 			}
 		}
 		

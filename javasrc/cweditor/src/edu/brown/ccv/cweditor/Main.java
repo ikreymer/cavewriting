@@ -25,7 +25,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		CaveWritingEditorFrame frame = new CaveWritingEditorFrame();
+		CaveWritingEditorFrame frame = new CaveWritingEditorFrame(true);
 		frame.setMinimumSize(new Dimension(600, 400));
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);

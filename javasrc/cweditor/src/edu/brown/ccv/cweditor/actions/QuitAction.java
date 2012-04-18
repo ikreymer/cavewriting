@@ -25,7 +25,7 @@ public class QuitAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		switch (JOptionPane.showConfirmDialog(frame, "Really quit?", "Are you sure you want to quit?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)) {
 		case JOptionPane.YES_OPTION:
-			frame.dispose();
+			frame.kill();
 			break;
 		case JOptionPane.NO_OPTION:
 		case JOptionPane.CANCEL_OPTION:

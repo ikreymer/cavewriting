@@ -112,7 +112,7 @@ public class StoryReader {
     }
 
 	/*
-	 * EVENT------------------------------------------------------------------------------------------------
+	 * SOUND------------------------------------------------------------------------------------------------
 	 */
 	private static Sound readSound(Element next) throws XMLParseException {
 	    return null;
@@ -203,7 +203,7 @@ public class StoryReader {
 				break;
 			}
 		}
-		if (relativePlacement == null && !allowLookupFailure) {
+		if (relativePlacement == null && !allowLookupFailure) { // allowLookupFailure is a hack to ensure placements referring to themselves is okay
 			throw new XMLParseException("Could not find RelativeTo placement: "+relativeTo);
 		}
 		
@@ -229,7 +229,7 @@ public class StoryReader {
 			throw new XMLParseException("Empty text for vector");
 		}
 		if (text.charAt(0) != '(' || text.charAt(text.length()-1) != ')') {
-			throw new XMLParseException("Vector not surrounded in parens");
+			throw new XMLParseException("Vector not surrounded by parens");
 		}
 		text = text.substring(1, text.length()-1);
 		
