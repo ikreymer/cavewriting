@@ -13,6 +13,19 @@ public class StoryReader {
 	private StoryReader() {}
 	
 	public static Story readStory(InputStream in) throws XMLParseException {
+		return new StoryReader().instanceReadStory(in);
+	}
+	
+	List<NamedPlacement> placements = new ArrayList<NamedPlacement>();
+	List<StoryObject> objects = new ArrayList<StoryObject>();
+	List<Group> groups = new ArrayList<Group>();
+	List<Sound> sounds = new ArrayList<Sound>();
+	List<Timeline> timelines = new ArrayList<Timeline>();
+	List<Event> events = new ArrayList<Event>();
+	List<ParticleAction> particleActions = new ArrayList<ParticleAction>();
+	
+	private Story instanceReadStory(InputStream in) throws XMLParseException {
+		
 		Element root;
 		try {
 	        root = new SAXReader().read(in).getRootElement();
@@ -26,7 +39,7 @@ public class StoryReader {
 		
 		Element tempElement;
 		
-		List<NamedPlacement> placements = new ArrayList<NamedPlacement>();
+		// Lots of things depend on Placements, so probably best to always do these first 
 		if ((tempElement = root.element("PlacementRoot")) != null) {
 			List<Element> deferredProcessing = new ArrayList<Element>();
 
@@ -34,59 +47,88 @@ public class StoryReader {
 			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Placement"); it.hasNext();) {
 				Element e = it.next();
 				if (getStringAttribute(e, "name").equals(getElementTextString(e, "RelativeTo")))
-					placements.add(readNamedPlacement(e, placements));
+					placements.add(readNamedPlacement(e));
 				else
 					deferredProcessing.add(e);
 			}
 			
 			for (Element e : deferredProcessing) {
-				placements.add(readNamedPlacement(e, placements));
+				placements.add(readNamedPlacement(e));
 			}
 		}
 		
-		List<StoryObject> objects = new ArrayList<StoryObject>();
-		if ((tempElement = root.element("ObjectRoot")) != null) {
-			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Object"); it.hasNext();) {
-				objects.add(readObject(it.next()));
-			}
-		}
+		// Globals are easy
+		Global globals = readGlobal(getElement(root, "Global"));
 		
-		List<Group> groups = new ArrayList<Group>();
-		if ((tempElement = root.element("GroupRoot")) != null) {
-			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Group"); it.hasNext();) {
-				groups.add(readGroup(it.next()));
-			}
-		}
-		
-		List<Timeline> timelines = new ArrayList<Timeline>();
-		if ((tempElement = root.element("TimelineRoot")) != null) {
-			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Timeline"); it.hasNext();) {
-				timelines.add(readTimeline(it.next()));
-			}
-		}
-		
-		List<Sound> sounds = new ArrayList<Sound>();
+		// Sounds also don't depend on anything else
 		if ((tempElement = root.element("SoundRoot")) != null) {
 			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Sound"); it.hasNext();) {
 				sounds.add(readSound(it.next()));
 			}
 		}
 		
-		List<Event> events = new ArrayList<Event>();
+		// Past this point lies all the things that can have circular dependencies, so these things must all be created and THEN linked
+		
+		List<Element> objectElements = new ArrayList<Element>();
+		if ((tempElement = root.element("ObjectRoot")) != null) {
+			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Object"); it.hasNext();) {
+				Element element = it.next();
+				objects.add(new StoryObject(getStringAttribute(element, "name")));
+				objectElements.add(element);
+			}
+		}
+		
+		List<Element> groupElements = new ArrayList<Element>();
+		if ((tempElement = root.element("GroupRoot")) != null) {
+			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Group"); it.hasNext();) {
+				Element element = it.next();
+				groups.add(new Group(getStringAttribute(element, "name")));
+				groupElements.add(element);
+			}
+		}
+		
+		List<Element> timelineElements = new ArrayList<Element>();
+		if ((tempElement = root.element("TimelineRoot")) != null) {
+			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("Timeline"); it.hasNext();) {
+				Element element = it.next();
+				timelines.add(new Timeline(getStringAttribute(element, "name")));
+				timelineElements.add(element);
+			}
+		}
+		
+		List<Element> particleActionElements = new ArrayList<Element>();
+		if ((tempElement = root.element("ParticleActionRoot")) != null) {
+			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("ParticleActionList"); it.hasNext();) {
+				Element element = it.next();
+				particleActions.add(new ParticleAction(getStringAttribute(element, "name")));
+				particleActionElements.add(element);
+			}
+		}
+		
+		// now that the objects have been created with their names, we can actually flesh them out
+
+		// events are unnamed and can't be referred to so they can be constructed simply (though they do rely on the things above and therefore can't be created along with sounds and placements)
 		if ((tempElement = root.element("EventRoot")) != null) {
 			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("EventTrigger"); it.hasNext();) {
 				events.add(readEvent(it.next()));
 			}
 		}
 		
-		List<ParticleAction> particleActions = new ArrayList<ParticleAction>();
-		if ((tempElement = root.element("ParticleActionRoot")) != null) {
-			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("ParticleActionList"); it.hasNext();) {
-				particleActions.add(readParticleAction(it.next()));
-			}
+		for (int i=0, len=objectElements.size(); i < len; ++i) {
+			readObject(objects.get(i), objectElements.get(i));
 		}
 		
-		Global globals = readGlobal(getElement(root, "Global"), placements);
+		for (int i=0, len=groupElements.size(); i < len; ++i) {
+			readGroup(groups.get(i), groupElements.get(i));
+		}
+		
+		for (int i=0, len=timelineElements.size(); i < len; ++i) {
+			readTimeline(timelines.get(i), timelineElements.get(i));
+		}
+		
+		for (int i=0, len=particleActionElements.size(); i < len; ++i) {
+			readParticleAction(particleActions.get(i), particleActionElements.get(i));
+		}
 		
 		Attribute lastXPath = root.attribute("last_xpath");
 		return new Story(objects, groups, timelines, placements, sounds, events, particleActions, globals, root.attributeValue("version"), lastXPath == null ? null : lastXPath.getValue());
@@ -100,29 +142,29 @@ public class StoryReader {
 	 * PARTICLEACTION---------------------------------------------------------------------------------------
 	 */
 	
-	private static ParticleAction readParticleAction(Element next) throws XMLParseException {
+	private ParticleAction readParticleAction(ParticleAction dest, Element next) throws XMLParseException {
 	    return null;
     }
 
 	/*
 	 * EVENT------------------------------------------------------------------------------------------------
 	 */
-	private static Event readEvent(Element next) throws XMLParseException {
+	private Event readEvent(Element next) throws XMLParseException {
 	    return null;
     }
 
 	/*
 	 * SOUND------------------------------------------------------------------------------------------------
 	 */
-	private static Sound readSound(Element next) throws XMLParseException {
+	private Sound readSound(Element next) throws XMLParseException {
 	    return null;
     }
 
 	/*
 	 * PLACEMENT--------------------------------------------------------------------------------------------
 	 */
-	private static NamedPlacement readNamedPlacement(Element next, List<NamedPlacement> placements) throws XMLParseException {
-		Placement temp = readPlacement(next, placements, true);
+	private NamedPlacement readNamedPlacement(Element next) throws XMLParseException {
+		Placement temp = readPlacement(next, true);
 		
 		String name = getStringAttribute(next, "name");
 		
@@ -143,14 +185,14 @@ public class StoryReader {
 	/*
 	 * TIMELINE---------------------------------------------------------------------------------------------
 	 */
-	private static Timeline readTimeline(Element next) throws XMLParseException {
+	private Timeline readTimeline(Timeline dest, Element next) throws XMLParseException {
 	    return null;
     }
 
 	/*
 	 * GROUP------------------------------------------------------------------------------------------------
 	 */
-	private static Group readGroup(Element next) throws XMLParseException {
+	private Group readGroup(Group dest, Element next) throws XMLParseException {
 	    return null;
     }
 	
@@ -158,7 +200,7 @@ public class StoryReader {
 	 * OBJECT-----------------------------------------------------------------------------------------------
 	 */
 
-	private static StoryObject readObject(Element next) throws XMLParseException {
+	private StoryObject readObject(StoryObject dest, Element next) throws XMLParseException {
 	    return null;
     }
 	
@@ -166,9 +208,9 @@ public class StoryReader {
 	 * GLOBAL-----------------------------------------------------------------------------------------------
 	 */
 
-	private static Global readGlobal(Element element, List<NamedPlacement> placements) throws XMLParseException {
-		Camera desktopCamera = readCamera(getElement(element, "CameraPos"), placements);
-		Camera caveCamera = readCamera(getElement(element, "CaveCameraPos"), placements);
+	private Global readGlobal(Element element) throws XMLParseException {
+		Camera desktopCamera = readCamera(getElement(element, "CameraPos"));
+		Camera caveCamera = readCamera(getElement(element, "CaveCameraPos"));
 		
 		Color backgroundColor = parseColor(getStringAttribute(getElement(element, "Background"), "color"));
 		
@@ -179,8 +221,8 @@ public class StoryReader {
 		return new Global(desktopCamera, caveCamera, backgroundColor, allowWandRotation, allowWandMovement);
 	}
 	
-	private static Camera readCamera(Element element, List<NamedPlacement> placements) throws XMLParseException {
-		Placement placement = readPlacement(getElement(element, "Placement"), placements);
+	private Camera readCamera(Element element) throws XMLParseException {
+		Placement placement = readPlacement(getElement(element, "Placement"));
 		double farClip = getDoubleAttribute(element, "far-clip");
 		
 		return new Camera(placement, farClip);
@@ -190,11 +232,11 @@ public class StoryReader {
 	 * HELPER-----------------------------------------------------------------------------------------------
 	 */
 	
-	private static Placement readPlacement(Element next, List<NamedPlacement> placements) throws XMLParseException {
-		return readPlacement(next, placements, false);
+	private Placement readPlacement(Element next) throws XMLParseException {
+		return readPlacement(next, false);
 	}
 	
-	private static Placement readPlacement(Element next, List<NamedPlacement> placements, boolean allowLookupFailure) throws XMLParseException {
+	private Placement readPlacement(Element next, boolean allowLookupFailure) throws XMLParseException {
 		String relativeTo = getElementTextString(next, "RelativeTo");
 		NamedPlacement relativePlacement = null;
 		for (NamedPlacement namedPlacement : placements) {
