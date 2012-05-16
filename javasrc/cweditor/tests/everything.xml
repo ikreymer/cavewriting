@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?jaxfront version=2.1;time=2012-05-09 04:48:11.408;xui=jar:http://cavewriting.sourceforge.net/2006/CWEditor/cavewriting.jar!/schema/caveschema.xui;xsd=caveschema.xsd?>
-<Story version="8" last_xpath="/Story/ObjectRoot/Object[6]
+<?jaxfront version=2.1;time=2012-05-16 07:46:20.433;xui=jar:http://cavewriting.sourceforge.net/2006/CWEditor/cavewriting.jar!/schema/caveschema.xui;xsd=caveschema.xsd?>
+<Story version="8" last_xpath="/Story/ObjectRoot/Object[5]
 ">
        <ObjectRoot>
               <Object name="BLARG">
@@ -15,9 +15,7 @@
                             <Position>(0.0, 2.0, 0.0)</Position>
                      </Placement>
                      <Content>
-                            <Text horiz-align="center" vert-align="center" font="Arial.ttf" depth="0.0">
-                                   <text>asdf</text>
-                            </Text>
+                            <Image filename="./testMedia/w.png"/>
                      </Content>
               </Object>
               <Object name="LINK">
@@ -33,7 +31,7 @@
                                    <Normal normal="(0.0, 0.0, 1.0)" angle="20.0"/>
                      </Placement>
                      <Content>
-                            <Text horiz-align="left" vert-align="bottom" font="Courier.ttf" depth="2.0">
+                            <Text horiz-align="left" vert-align="top" font="Courier.ttf" depth="2.0">
                                    <text>LINK</text>
                             </Text>
                      </Content>
@@ -66,7 +64,7 @@
                                                         </Transition>
                                                  </GroupRef>
                                           <Clicks>
-                                                 <Any/>
+                                                 <NumClicks num_clicks="3" reset="true"/>
                                           </Clicks>
                                    </Actions>
                             </Link>
@@ -132,7 +130,7 @@
                             <Position>(0.0, 0.0, 0.0)</Position>
                      </Placement>
                      <Content>
-                            <Text horiz-align="center" vert-align="center" depth="0.0">
+                            <Text horiz-align="right" vert-align="bottom" depth="0.0">
                                    <text>o</text>
                             </Text>
                      </Content>
@@ -151,6 +149,87 @@
                      </Placement>
                      <Content>
                             <None/>
+                     </Content>
+              </Object>
+              <Object name="BLARG2">
+                     <Visible>false</Visible>
+                     <Color>255,255,255</Color>
+                     <Lighting>false</Lighting>
+                     <ClickThrough>true</ClickThrough>
+                     <AroundSelfAxis>true</AroundSelfAxis>
+                     <Scale>2.0</Scale>
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, 2.0, 0.0)</Position>
+                     </Placement>
+                     <Content>
+                            <StereoImage left-image="./testMedia/w.png" right-image="./testMedia/w.png"/>
+                     </Content>
+              </Object>
+              <Object name="ModeL">
+                     <Visible>true</Visible>
+                     <Color>255,255,255</Color>
+                     <Lighting>false</Lighting>
+                     <ClickThrough>false</ClickThrough>
+                     <AroundSelfAxis>false</AroundSelfAxis>
+                     <Scale>1.0</Scale>
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, 0.0, 0.0)</Position>
+                     </Placement>
+                     <Content>
+                            <Model filename="./testMedia/w.png" check-collisions="true"/>
+                     </Content>
+              </Object>
+              <Object name="iamaLIGHT">
+                     <Visible>true</Visible>
+                     <Color>255,255,255</Color>
+                     <Lighting>false</Lighting>
+                     <ClickThrough>false</ClickThrough>
+                     <AroundSelfAxis>false</AroundSelfAxis>
+                     <Scale>1.0</Scale>
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, 0.0, 0.0)</Position>
+                     </Placement>
+                     <Content>
+                            <Light diffuse="false" specular="true" const_atten="1.0" lin_atten="0.0" quad_atten="0.0">
+                                   <Spot angle="30.0"/>
+                            </Light>
+                     </Content>
+              </Object>
+              <Object name="iamaLIGHT2">
+                     <Visible>true</Visible>
+                     <Color>255,255,255</Color>
+                     <Lighting>false</Lighting>
+                     <ClickThrough>false</ClickThrough>
+                     <AroundSelfAxis>false</AroundSelfAxis>
+                     <Scale>1.0</Scale>
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, 0.0, 0.0)</Position>
+                     </Placement>
+                     <Content>
+                            <Light diffuse="true" specular="false" const_atten="1.0" lin_atten="0.0" quad_atten="0.0">
+                                   <Directional/>
+                            </Light>
+                     </Content>
+              </Object>
+              <Object name="iamaLIGHT3">
+                     <Visible>true</Visible>
+                     <Color>255,255,255</Color>
+                     <Lighting>false</Lighting>
+                     <ClickThrough>false</ClickThrough>
+                     <AroundSelfAxis>false</AroundSelfAxis>
+                     <Scale>1.0</Scale>
+                     <Placement>
+                            <RelativeTo>Center</RelativeTo>
+                            <Position>(0.0, 0.0, 0.0)</Position>
+                     </Placement>
+                     <Content>
+                            <Light diffuse="true" specular="true" const_atten="1.0" lin_atten="0.0" quad_atten="0.0">
+                                   <Point/>
+                            </Light>
                      </Content>
               </Object>
        </ObjectRoot>
@@ -246,7 +325,7 @@
               </Sound>
        </SoundRoot>
        <EventRoot>
-              <EventTrigger enabled="true" name="2" duration="0.0" remain-enabled="true">
+              <EventTrigger enabled="false" name="EVENT" duration="0.0" remain-enabled="true">
                             <HeadTrack>
                                    <Position>
                                           <Anywhere/>
@@ -255,6 +334,86 @@
                                           <PointTarget point="(0, 0, 0)" angle="30.0"/>
                                    </Direction>
                             </HeadTrack>
+                     <Actions>
+                            <ObjectChange name="purteecles">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+              </EventTrigger>
+              <EventTrigger enabled="true" name="CVENT" duration="0.0" remain-enabled="false">
+                            <HeadTrack>
+                                   <Position>
+                                          <Box ignore-Y="false" corner1="(1, 2, 3)" corner2="(4, 5, 6)">
+                                                 <Movement>
+                                                        <Outside/>
+                                                 </Movement>
+                                          </Box>
+                                   </Position>
+                                   <Direction>
+                                          <DirectionTarget direction="(9, 8, 7)" angle="30.0"/>
+                                   </Direction>
+                            </HeadTrack>
+                     <Actions>
+                            <ObjectChange name="purteecles">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+              </EventTrigger>
+              <EventTrigger enabled="true" name="BVENT" duration="0.0" remain-enabled="false">
+                            <HeadTrack>
+                                   <Position>
+                                          <Box ignore-Y="true" corner1="(1, 2, 3)" corner2="(4, 5, 6)">
+                                                 <Movement>
+                                                        <Inside/>
+                                                 </Movement>
+                                          </Box>
+                                   </Position>
+                                   <Direction>
+                                          <ObjectTarget name="LINK"/>
+                                   </Direction>
+                            </HeadTrack>
+                     <Actions>
+                            <ObjectChange name="purteecles">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+              </EventTrigger>
+              <EventTrigger enabled="true" name="DVENT" duration="0.0" remain-enabled="false">
+                            <MoveTrack>
+                                   <Source>
+                                          <ObjectRef name="BLARG"/>
+                                   </Source>
+                                   <Box ignore-Y="true" corner1="(0, 0, 0)" corner2="(0, 0, 0)">
+                                          <Movement>
+                                                 <Inside/>
+                                          </Movement>
+                                   </Box>
+                            </MoveTrack>
+                     <Actions>
+                            <ObjectChange name="purteecles">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+              </EventTrigger>
+              <EventTrigger enabled="true" name="FVENT" duration="0.0" remain-enabled="true">
+                            <MoveTrack>
+                                   <Source>
+                                          <GroupObj name="GROUP1"/>
+                                   </Source>
+                                   <Box ignore-Y="true" corner1="(0, 0, 0)" corner2="(0, 0, 0)">
+                                          <Movement>
+                                                 <Inside/>
+                                          </Movement>
+                                   </Box>
+                            </MoveTrack>
                      <Actions>
                             <ObjectChange name="purteecles">
                                    <Transition duration="1.0">

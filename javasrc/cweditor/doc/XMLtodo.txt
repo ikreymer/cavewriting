@@ -1,0 +1,16 @@
+XML TODO
+--------
+
+Story
+	ObjectRoot
+		* W
+		LinkRoot RW
+	GroupRoot
+		* RW
+	TimelineRoot
+		* RW
+	EventRoot
+		* RW
+	ParticleActionRoot
+		* RW
+		

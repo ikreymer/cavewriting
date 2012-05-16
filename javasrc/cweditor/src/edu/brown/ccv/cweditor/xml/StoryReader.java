@@ -39,7 +39,8 @@ public class StoryReader {
 		
 		Element tempElement;
 		
-		// Lots of things depend on Placements, so probably best to always do these first 
+		// Lots of things depend on Placements, so probably best to always do these first
+		// TODO: create all the placements and then connect them to each other rather than allowLookupFailure hax
 		if ((tempElement = root.element("PlacementRoot")) != null) {
 			List<Element> deferredProcessing = new ArrayList<Element>();
 
@@ -105,13 +106,19 @@ public class StoryReader {
 			}
 		}
 		
-		// now that the objects have been created with their names, we can actually flesh them out
-
-		// events are unnamed and can't be referred to so they can be constructed simply (though they do rely on the things above and therefore can't be created along with sounds and placements)
+		List<Element> eventElements = new ArrayList<Element>();
 		if ((tempElement = root.element("EventRoot")) != null) {
 			for (@SuppressWarnings("unchecked") Iterator<Element> it = tempElement.elementIterator("EventTrigger"); it.hasNext();) {
-				events.add(readEvent(it.next()));
+				Element element = it.next();
+				events.add(new Event(getStringAttribute(element, "name")));
+				eventElements.add(element);
 			}
+		}
+		
+		// now that the objects have been created with their names, we can actually flesh them out
+
+		for (int i=0, len=eventElements.size(); i < len; ++i) {
+			readEvent(events.get(i), eventElements.get(i));
 		}
 		
 		for (int i=0, len=objectElements.size(); i < len; ++i) {
@@ -142,22 +149,46 @@ public class StoryReader {
 	 * PARTICLEACTION---------------------------------------------------------------------------------------
 	 */
 	
-	private ParticleAction readParticleAction(ParticleAction dest, Element next) throws XMLParseException {
-	    return null;
+	private void readParticleAction(ParticleAction dest, Element src) throws XMLParseException {
     }
 
 	/*
 	 * EVENT------------------------------------------------------------------------------------------------
 	 */
-	private Event readEvent(Element next) throws XMLParseException {
-	    return null;
+	private void readEvent(Event dest, Element src) throws XMLParseException {
+		
     }
 
 	/*
 	 * SOUND------------------------------------------------------------------------------------------------
 	 */
 	private Sound readSound(Element next) throws XMLParseException {
-	    return null;
+		Element settings = getElement(next, "Settings");
+		
+		// pseudo-enum parsing is LAME
+		Element repeatSource = getElement(next, "Repeat");
+		Sound.Repeat repeat;
+		
+		@SuppressWarnings("unused") // not used now but maybe later, good to keep the assignments in just in case even if it's never read
+        Element repeatElement;
+		
+		if ((repeatElement = repeatSource.element("NoRepeat")) != null) {
+			repeat = Sound.Repeat.NONE;
+		} else if ((repeatElement = repeatSource.element("RepeatForever")) != null) {
+			repeat = Sound.Repeat.FOREVER;
+		} else if ((repeatElement = repeatSource.element("RepeatNum")) != null) {
+			repeat = new Sound.Repeat.Num(getElementTextInt(repeatSource, "RepeatNum"));
+		} else
+			throw new XMLParseException("Invalid or missing sound repeat");
+		
+	    return new Sound(getStringAttribute(next, "name"),
+	                     next.attributeValue("filename"),
+	                     getBooleanAttribute(next, "autostart"),
+	                     getElementChildEnum(next, "Mode", Sound.Mode.class),
+	                     repeat,
+	                     getDoubleAttribute(settings, "freq"),
+	                     getDoubleAttribute(settings, "volume"),
+	                     getDoubleAttribute(settings, "pan"));
     }
 
 	/*
@@ -185,23 +216,79 @@ public class StoryReader {
 	/*
 	 * TIMELINE---------------------------------------------------------------------------------------------
 	 */
-	private Timeline readTimeline(Timeline dest, Element next) throws XMLParseException {
-	    return null;
+	private void readTimeline(Timeline dest, Element src) throws XMLParseException {
     }
 
 	/*
 	 * GROUP------------------------------------------------------------------------------------------------
 	 */
-	private Group readGroup(Group dest, Element next) throws XMLParseException {
-	    return null;
+	private void readGroup(Group dest, Element src) throws XMLParseException {
     }
 	
 	/*
 	 * OBJECT-----------------------------------------------------------------------------------------------
 	 */
 
-	private StoryObject readObject(StoryObject dest, Element next) throws XMLParseException {
-	    return null;
+	private void readObject(StoryObject dest, Element src) throws XMLParseException {
+		// easy things
+		dest.setVisible(getElementTextBoolean(src, "Visible"));
+		dest.setColor(parseColor(getElementTextString(src, "Color")));
+		dest.setLighting(getElementTextBoolean(src, "Lighting"));
+		dest.setClickThrough(getElementTextBoolean(src, "ClickThrough"));
+		dest.setAroundSelfAxis(getElementTextBoolean(src, "AroundSelfAxis"));
+		dest.setScale(getElementTextDouble(src, "Scale"));
+		dest.setPlacement(readPlacement(getElement(src, "Placement")));
+		
+		// content
+		Element contentSource = getElement(src, "Content");
+		StoryObject.Content content;
+		Element contentElement;
+		if ((contentElement = contentSource.element("Text")) != null) {
+			content = new StoryObject.Content.Text(getEnumAttribute(contentElement, "horiz-align", StoryObject.Content.Text.HorizontalAlign.class),
+			                                       getEnumAttribute(contentElement, "vert-align", StoryObject.Content.Text.VerticalAlign.class),
+			                                       contentElement.attributeValue("font"),
+			                                       getDoubleAttribute(contentElement, "depth"),
+			                                       getElementTextString(contentElement, "text"));
+		} else if ((contentElement = contentSource.element("Image")) != null) {
+			content = new StoryObject.Content.Image(contentElement.attributeValue("filename"));
+		} else if ((contentElement = contentSource.element("ParticleSystem")) != null) {
+			content = new StoryObject.Content.ParticleSystem(getIntAttribute(contentElement, "max-particles"),
+			                                                 find(particleActions, getStringAttribute(contentElement, "actions-name")),
+			                                                 find(groups, getStringAttribute(contentElement, "particle-group")),
+			                                                 getBooleanAttribute(contentElement, "look-at-camera"),
+			                                                 getBooleanAttribute(contentElement, "sequential"),
+			                                                 getDoubleAttribute(contentElement, "speed"));
+		} else if ((contentElement = contentSource.element("None")) != null) {
+			content = StoryObject.Content.NONE;
+		} else if ((contentElement = contentSource.element("StereoImage")) != null) {
+			content = new StoryObject.Content.StereoImage(contentElement.attributeValue("left-image"), contentElement.attributeValue("right-image"));
+		} else if ((contentElement = contentSource.element("Model")) != null) {
+			content = new StoryObject.Content.Model(contentElement.attributeValue("filename"), getBooleanAttribute(contentElement, "check-collisions"));
+		} else if ((contentElement = contentSource.element("Light")) != null) {
+			StoryObject.Content.Light.Type type;
+			Element typeElement;
+			if ((typeElement = contentElement.element("Directional")) != null) {
+				type = StoryObject.Content.Light.Type.DIRECTIONAL;
+			} else if ((typeElement = contentElement.element("Point")) != null) {
+				type = StoryObject.Content.Light.Type.POINT;
+			} else if ((typeElement = contentElement.element("Spot")) != null) {
+				type = new StoryObject.Content.Light.Type.Spot(getDoubleAttribute(typeElement, "angle"));
+			} else
+				throw new XMLParseException("Missing or unknown light type");
+			
+			content = new StoryObject.Content.Light(getBooleanAttribute(contentElement, "diffuse"),
+			                                        getBooleanAttribute(contentElement, "specular"),
+			                                        getDoubleAttribute(contentElement, "const_atten"),
+			                                        getDoubleAttribute(contentElement, "lin_atten"),
+			                                        getDoubleAttribute(contentElement, "quad_atten"),
+			                                        type);
+		} else
+			throw new XMLParseException("Missing or unknown content in a content tag");
+		
+		dest.setContent(content);
+		
+		// link
+		
     }
 	
 	/*
@@ -231,6 +318,14 @@ public class StoryReader {
 	/*
 	 * HELPER-----------------------------------------------------------------------------------------------
 	 */
+	
+	private <T extends Named> T find(Collection<T> list, String name) throws XMLParseException {
+		for (T t : list) {
+			if (t.getName().equals(name))
+				return t;
+		}
+		throw new XMLParseException("Could not find '"+name+"'");
+	}
 	
 	private Placement readPlacement(Element next) throws XMLParseException {
 		return readPlacement(next, false);

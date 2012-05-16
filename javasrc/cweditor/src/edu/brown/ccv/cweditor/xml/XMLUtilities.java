@@ -1,5 +1,7 @@
 package edu.brown.ccv.cweditor.xml;
 
+import java.util.Iterator;
+
 import org.dom4j.Element;
 
 /**
@@ -17,6 +19,22 @@ public class XMLUtilities {
 	
 	public static void addDoubleAttribute(Element element, String attributeName, double value) {
 		element.addAttribute(attributeName, Double.toString(value));
+	}
+
+	public static void addBooleanAttribute(Element element, String attributeName, boolean value) {
+	    element.addAttribute(attributeName, Boolean.toString(value));
+    }
+	
+	public static <T extends Enum<T>> void addElementEnum(Element element, String subElementName, T value) {
+		element.addElement(subElementName).addElement(value.name());
+	}
+	
+	public static void addElementBoolean(Element element, String subElementName, boolean value) {
+		element.addElement(subElementName).setText(Boolean.toString(value));
+	}
+	
+	public static void addElementDouble(Element element, String subElementName, double value) {
+		element.addElement(subElementName).setText(Double.toString(value));
 	}
 	
 	// Attribute helper methods
@@ -45,7 +63,7 @@ public class XMLUtilities {
 		try {
 			value = Double.parseDouble(attribute);
 		} catch (NumberFormatException e) {
-			throw new XMLParseException("Attribute " + attributeName + " for element " + element.getQualifiedName() + " was not an int");
+			throw new XMLParseException("Attribute " + attributeName + " for element " + element.getQualifiedName() + " was not a double");
 		}
 		return value;
 	}
@@ -57,6 +75,16 @@ public class XMLUtilities {
 			throw new XMLParseException("Attribute " + attributeName + " for element " + element.getQualifiedName() + " was not \"true\" or \"false\"");
 		}
 		return value;
+	}
+	
+	public static <T extends Enum<T>> T getEnumAttribute(Element element, String attributeName, Class<T> enumClass) throws XMLParseException {
+		String attribute = getStringAttribute(element, attributeName);
+		for (T t : enumClass.getEnumConstants()) {
+			if (t.name().equalsIgnoreCase(attribute)) {
+				return t;
+			}
+		}
+		throw new XMLParseException("Attribute " + attributeName + " for element " + element.getQualifiedName() + " was not a valid "+enumClass.getSimpleName());
 	}
 	
 	// element text -> various primitives
@@ -110,5 +138,26 @@ public class XMLUtilities {
 			throw new XMLParseException(baseElement.getQualifiedName()+" did not have a subelement "+subElement);
 		return ret;
 	}
+
+	// misc
 	
+	public static <T extends Enum<T>> T getElementChildEnum(Element baseElement, String subElementName, Class<T> enumClass) throws XMLParseException {
+		T[] ts = enumClass.getEnumConstants();
+
+		@SuppressWarnings("unchecked")
+        Iterator<Element> iterator = getElement(baseElement, subElementName).elementIterator();
+		
+		if (!iterator.hasNext())
+			throw new XMLParseException("Empty "+subElementName+"tag within a "+baseElement.getName()+" tag");
+		Element element = iterator.next();
+		if (iterator.hasNext())
+			throw new XMLParseException("Multiple children of a "+subElementName+"tag within a "+baseElement.getName()+" tag");
+		
+		for (T t : ts) {
+			if (t.name().equalsIgnoreCase(element.getName()))
+				return t;
+		}
+		
+		throw new XMLParseException("Invalid/unknown tag \""+element.getName()+"\" in a "+subElementName+"tag within a "+baseElement.getName()+" tag");
+	}
 }

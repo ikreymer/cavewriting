@@ -1,6 +1,6 @@
 package edu.brown.ccv.cweditor.story;
 
-public class NamedPlacement extends Placement {
+public class NamedPlacement extends Placement implements Named {
 	String name;
 	
 	public NamedPlacement(NamedPlacement relativeTo, Vector3 position, Rotation rotation, String name) {
@@ -8,11 +8,13 @@ public class NamedPlacement extends Placement {
 	    this.name = name;
     }
 
-	public String getName() {
+	@Override
+    public String getName() {
     	return name;
     }
 
-	public void setName(String name) {
+	@Override
+    public void setName(String name) {
     	this.name = name;
     }
 	

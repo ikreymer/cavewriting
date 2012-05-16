@@ -1,5 +1,6 @@
 package edu.brown.ccv.cweditor;
 
+import java.awt.BorderLayout;
 import java.io.*;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ public class CaveWritingEditorStoryTab extends JPanel {
 	JTextArea testArea;
 
 	public CaveWritingEditorStoryTab(CaveWritingEditorFrame caveWritingEditorFrame, Story story, File file) {
+		super(new BorderLayout());
 		this.frame = caveWritingEditorFrame;
 	    this.story = story;
 	    this.file = file;
@@ -29,7 +31,8 @@ public class CaveWritingEditorStoryTab extends JPanel {
         }
 	    
 	    testArea = new JTextArea(output.toString());
-	    add(new JScrollPane(testArea));
+	    JScrollPane scrollPane = new JScrollPane(testArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
+	    add(scrollPane, BorderLayout.CENTER);
     }
 
 	public String getTabTitle() {

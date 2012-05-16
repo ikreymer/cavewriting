@@ -46,10 +46,11 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 		
 		tabs = new JTabbedPane();
 		add(tabs);
-		newAction.actionPerformed(null);
+//		newAction.actionPerformed(null);
 		openStoryTab(new File("tests/everything.xml"));
 		
-		pack();
+//		pack();
+		setSize(1024, 768);
 	}
 	
 	public void openStoryTab(Story story) {
@@ -92,6 +93,10 @@ public class CaveWritingEditorFrame extends JFrame implements WindowListener {
 		}
 		
 		tabs.remove(c);
+	}
+	
+	public boolean anyUnsavedChanges() {
+		return false;
 	}
 
 	private void trySettingIcon() {

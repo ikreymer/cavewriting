@@ -23,16 +23,18 @@ public class QuitAction extends AbstractAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		switch (JOptionPane.showConfirmDialog(frame, "Really quit?", "Are you sure you want to quit?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)) {
-		case JOptionPane.YES_OPTION:
-			frame.kill();
-			break;
-		case JOptionPane.NO_OPTION:
-		case JOptionPane.CANCEL_OPTION:
-			break;
-		default:
-			throw new UnsupportedOperationException("Bad value returned from window closing dialog?");
+		if (frame.anyUnsavedChanges()) {
+    		switch (JOptionPane.showConfirmDialog(frame, "Really quit?", "Are you sure you want to quit?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)) {
+    		case JOptionPane.YES_OPTION:
+    			break;
+    		case JOptionPane.NO_OPTION:
+    		case JOptionPane.CANCEL_OPTION:
+    			return;
+    		default:
+    			throw new UnsupportedOperationException("Bad value returned from window closing dialog?");
+    		}
 		}
+		frame.kill();
 	}
 	
 }
