@@ -9,16 +9,19 @@ import org.dom4j.Element;
  * parser classes.
  */
 public class XMLUtilities {
-	public static boolean addStringAttributeIfNotNull(Element element, String attributeName, String value) {
-		if (value == null)
-			return false;
+	public static Element addStringAttributeIfNotNull(Element element, String attributeName, String value) {
+		if (value != null)
+			element.addAttribute(attributeName, value);
 		
-		element.addAttribute(attributeName, value);
-		return true;
+		return element;
 	}
 	
 	public static void addDoubleAttribute(Element element, String attributeName, double value) {
 		element.addAttribute(attributeName, Double.toString(value));
+	}
+	
+	public static void addIntAttribute(Element element, String attributeName, int value) {
+		element.addAttribute(attributeName, Integer.toString(value));
 	}
 
 	public static void addBooleanAttribute(Element element, String attributeName, boolean value) {
@@ -144,20 +147,20 @@ public class XMLUtilities {
 	public static <T extends Enum<T>> T getElementChildEnum(Element baseElement, String subElementName, Class<T> enumClass) throws XMLParseException {
 		T[] ts = enumClass.getEnumConstants();
 
-		@SuppressWarnings("unchecked")
-        Iterator<Element> iterator = getElement(baseElement, subElementName).elementIterator();
-		
-		if (!iterator.hasNext())
-			throw new XMLParseException("Empty "+subElementName+"tag within a "+baseElement.getName()+" tag");
-		Element element = iterator.next();
-		if (iterator.hasNext())
-			throw new XMLParseException("Multiple children of a "+subElementName+"tag within a "+baseElement.getName()+" tag");
-		
-		for (T t : ts) {
-			if (t.name().equalsIgnoreCase(element.getName()))
-				return t;
+		for (@SuppressWarnings("unchecked") Iterator<Element> iterator = getElement(baseElement, subElementName).elementIterator(); iterator.hasNext();) {
+			Element element = iterator.next();
+			for (T t : ts) {
+				if (t.name().equalsIgnoreCase(element.getName()))
+					return t;
+			}
 		}
 		
-		throw new XMLParseException("Invalid/unknown tag \""+element.getName()+"\" in a "+subElementName+"tag within a "+baseElement.getName()+" tag");
+//		if (!iterator.hasNext())
+//			throw new XMLParseException("Empty "+subElementName+"tag within a "+baseElement.getName()+" tag");
+//		Element element = iterator.next();
+//		if (iterator.hasNext())
+//			throw new XMLParseException("Multiple children of a "+subElementName+"tag within a "+baseElement.getName()+" tag");
+		
+		throw new XMLParseException("Missing or unknown tag for a \""+enumClass.getSimpleName()+"\" in a "+subElementName+" tag within a "+baseElement.getName()+" tag");
 	}
 }

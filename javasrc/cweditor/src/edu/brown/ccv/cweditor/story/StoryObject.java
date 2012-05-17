@@ -1,12 +1,14 @@
 package edu.brown.ccv.cweditor.story;
 
+import java.util.*;
+
 public class StoryObject implements Named {
 	public static abstract class Content {
 		Content() {}
 		
 		public static final class Text extends Content {
 			// WARNING: RENAMING THESE ENUM CONSTANTS WILL BREAK XML
-			// TODO: store xml name vs internal name
+			// TODO: separate xml name from internal name
 			public static enum VerticalAlign {
 				top, center, bottom
 			}
@@ -86,13 +88,13 @@ public class StoryObject implements Named {
 		
 		public static final class ParticleSystem extends Content {
 			int maxParticles;
-			ParticleAction actions;
+			ParticleActionList actions;
 			Group particleGroup;
 			boolean lookAtCamera;
 			boolean sequential;
 			double speed;
 			
-			public ParticleSystem(int maxParticles, ParticleAction actions, Group particleGroup, boolean lookAtCamera, boolean sequential, double speed) {
+			public ParticleSystem(int maxParticles, ParticleActionList actions, Group particleGroup, boolean lookAtCamera, boolean sequential, double speed) {
 	            this.maxParticles = maxParticles;
 	            this.actions = actions;
 	            this.particleGroup = particleGroup;
@@ -109,11 +111,11 @@ public class StoryObject implements Named {
             	this.maxParticles = maxParticles;
             }
 
-			public ParticleAction getActions() {
+			public ParticleActionList getActions() {
             	return actions;
             }
 
-			public void setActions(ParticleAction actions) {
+			public void setActions(ParticleActionList actions) {
             	this.actions = actions;
             }
 
@@ -152,6 +154,8 @@ public class StoryObject implements Named {
 		
 		public static final class Light extends Content {
 			public static class Type {
+				Type() {}
+				
 				public static final class Point extends Type { Point() {} }
 				public static final Point POINT = new Point();
 				
@@ -293,6 +297,108 @@ public class StoryObject implements Named {
 		public static final None NONE = new None();
 	}
 	
+	public static final class Link {
+		public static final class LinkAction {
+			public static class Clicks {
+				Clicks() {}
+				
+				public static final class Any extends Clicks { Any() {} }
+				public static final Any ANY = new Any();
+				
+				public static final class Num extends Clicks {
+					int numClicks;
+					boolean reset;
+					public Num(int numClicks, boolean reset) {
+	                    this.numClicks = numClicks;
+	                    this.reset = reset;
+                    }
+					public int getNumClicks() {
+                    	return numClicks;
+                    }
+					public void setNumClicks(int numClicks) {
+                    	this.numClicks = numClicks;
+                    }
+					public boolean isReset() {
+                    	return reset;
+                    }
+					public void setReset(boolean reset) {
+                    	this.reset = reset;
+                    }
+				}
+			}
+			
+			StoryAction action;
+			Clicks clicks;
+			
+			public LinkAction(StoryAction action, Clicks clicks) {
+	            this.action = action;
+	            this.clicks = clicks;
+            }
+
+			public StoryAction getAction() {
+            	return action;
+            }
+
+			public void setAction(StoryAction action) {
+            	this.action = action;
+            }
+
+			public Clicks getClicks() {
+            	return clicks;
+            }
+
+			public void setClicks(Clicks clicks) {
+            	this.clicks = clicks;
+            }
+		}
+		boolean enabled, remainEnabled;
+		Color enabledColor, selectedColor;
+		List<LinkAction> actions = new ArrayList<LinkAction>();
+		
+		public Link(boolean enabled, boolean remainEnabled, Color enabledColor, Color selectedColor) {
+	        this.enabled = enabled;
+	        this.remainEnabled = remainEnabled;
+	        this.enabledColor = enabledColor;
+	        this.selectedColor = selectedColor;
+        }
+		
+		public List<LinkAction> getActions() {
+			return actions;
+		}
+		
+		public boolean isEnabled() {
+        	return enabled;
+        }
+		
+		public void setEnabled(boolean enabled) {
+        	this.enabled = enabled;
+        }
+		
+		public boolean isRemainEnabled() {
+        	return remainEnabled;
+        }
+		
+		public void setRemainEnabled(boolean remainEnabled) {
+        	this.remainEnabled = remainEnabled;
+        }
+		
+		public Color getEnabledColor() {
+        	return enabledColor;
+        }
+		
+		public void setEnabledColor(Color enabledColor) {
+        	this.enabledColor = enabledColor;
+        }
+		
+		public Color getSelectedColor() {
+        	return selectedColor;
+        }
+		
+		public void setSelectedColor(Color selectedColor) {
+        	this.selectedColor = selectedColor;
+        }
+	}
+	
 	String name;
 	boolean visible;
 	Color color;
@@ -302,6 +408,8 @@ public class StoryObject implements Named {
 	double scale;
 	Placement placement;
 	Content content;
+	Sound sound;
+	Link link;
 
 	public StoryObject(String name) {
 	    this.name = name;
@@ -380,5 +488,21 @@ public class StoryObject implements Named {
 	public void setContent(Content content) {
     	this.content = content;
     }
+	
+	public Sound getSound() {
+    	return sound;
+    }
+
+	public void setSound(Sound sound) {
+    	this.sound = sound;
+    }
+
+	public Link getLink() {
+		return link;
+	}
+	
+	public void setLink(Link link) {
+		this.link = link;
+	}
 	
 }

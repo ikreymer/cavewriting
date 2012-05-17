@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?jaxfront version=2.1;time=2012-05-16 07:46:20.433;xui=jar:http://cavewriting.sourceforge.net/2006/CWEditor/cavewriting.jar!/schema/caveschema.xui;xsd=caveschema.xsd?>
-<Story version="8" last_xpath="/Story/ObjectRoot/Object[5]
+<?jaxfront version=2.1;time=2012-05-17 10:15:26.954;xui=jar:http://cavewriting.sourceforge.net/2006/CWEditor/cavewriting.jar!/schema/caveschema.xui;xsd=caveschema.xsd?>
+<Story version="8" last_xpath="/Story/ParticleActionRoot/ParticleActionList[1]/ParticleAction[8]
 ">
        <ObjectRoot>
               <Object name="BLARG">
@@ -10,13 +10,30 @@
                      <ClickThrough>true</ClickThrough>
                      <AroundSelfAxis>true</AroundSelfAxis>
                      <Scale>2.0</Scale>
+                     <SoundRef>BAD3</SoundRef>
                      <Placement>
                             <RelativeTo>Center</RelativeTo>
                             <Position>(0.0, 2.0, 0.0)</Position>
                      </Placement>
                      <Content>
-                            <Image filename="./testMedia/w.png"/>
+                            <Text horiz-align="center" vert-align="center" depth="0.0">
+                                   <text>THIS
+IS
+A
+WORD
+ON
+EACH
+LINE</text>
+                            </Text>
                      </Content>
+                     <LinkRoot>
+                            <Link>
+                                   <Enabled>true</Enabled>
+                                   <RemainEnabled>true</RemainEnabled>
+                                   <EnabledColor>0,128,255</EnabledColor>
+                                   <SelectedColor>255,0,0</SelectedColor>
+                            </Link>
+                     </LinkRoot>
               </Object>
               <Object name="LINK">
                      <Visible>true</Visible>
@@ -52,7 +69,178 @@
                                           </Clicks>
                                    </Actions>
                                    <Actions>
+                                                 <ObjectChange name="BLARG">
+                                                        <Transition duration="1.0">
+                                                               <Movement>
+                                                                      <Placement>
+                                                                             <RelativeTo>Center</RelativeTo>
+                                                                             <Position>(0.0, 0.0, 0.0)</Position>
+                                                                                    <Axis rotation="(0.0, 1.0, 0.0)" angle="0.0"/>
+                                                                      </Placement>
+                                                               </Movement>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <ObjectChange name="BLARG">
+                                                        <Transition duration="1.0">
+                                                               <MoveRel>
+                                                                      <Placement>
+                                                                             <RelativeTo>Center</RelativeTo>
+                                                                             <Position>(0.0, 0.0, 0.0)</Position>
+                                                                                    <Normal normal="(0.0, 0.0, 1.0)" angle="0.0"/>
+                                                                      </Placement>
+                                                               </MoveRel>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <ObjectChange name="BLARG">
+                                                        <Transition duration="1.0">
+                                                               <Color>255,255,255</Color>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <ObjectChange name="LINK">
+                                                        <Transition duration="1.0">
+                                                               <Scale>1.0</Scale>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <ObjectChange name="SOUNDO!">
+                                                        <Transition duration="1.0">
+                                                               <Sound/>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <ObjectChange name="SOUNDO!">
+                                                        <Transition duration="1.0">
+                                                               <Sound action="Play Sound"/>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <ObjectChange name="SOUNDO!">
+                                                        <Transition duration="1.0">
+                                                               <Sound action="Stop Sound"/>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <ObjectChange name="SOUNDO!">
+                                                        <Transition duration="1.0">
+                                                               <LinkChange>
+                                                                      <link_on/>
+                                                               </LinkChange>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <ObjectChange name="SOUNDO!">
+                                                        <Transition duration="1.0">
+                                                               <LinkChange>
+                                                                      <link_off/>
+                                                               </LinkChange>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <ObjectChange name="SOUNDO!">
+                                                        <Transition duration="1.0">
+                                                               <LinkChange>
+                                                                      <activate/>
+                                                               </LinkChange>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <ObjectChange name="SOUNDO!">
+                                                        <Transition duration="1.0">
+                                                               <LinkChange>
+                                                                      <activate_if_on/>
+                                                               </LinkChange>
+                                                        </Transition>
+                                                 </ObjectChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
                                                  <GroupRef name="GROUP1" random="Select One Randomly">
+                                                        <Transition duration="1.0">
+                                                               <MoveRel>
+                                                                      <Placement>
+                                                                             <RelativeTo>Center</RelativeTo>
+                                                                             <Position>(0.0, 0.0, 1.0)</Position>
+                                                                                    <Normal normal="(0.0, 0.0, 1.0)" angle="30.0"/>
+                                                                      </Placement>
+                                                               </MoveRel>
+                                                        </Transition>
+                                                 </GroupRef>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <GroupRef name="GROUP2">
+                                                        <Transition duration="1.0">
+                                                               <Visible>false</Visible>
+                                                        </Transition>
+                                                 </GroupRef>
+                                          <Clicks>
+                                                 <NumClicks num_clicks="3" reset="true"/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <GroupRef name="GROUP2">
+                                                        <Transition duration="1.0">
+                                                               <Movement>
+                                                                      <Placement>
+                                                                             <RelativeTo>Center</RelativeTo>
+                                                                             <Position>(0.0, 0.0, 0.0)</Position>
+                                                                      </Placement>
+                                                               </Movement>
+                                                        </Transition>
+                                                 </GroupRef>
+                                          <Clicks>
+                                                 <NumClicks num_clicks="3" reset="true"/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <GroupRef name="GROUP2">
                                                         <Transition duration="1.0">
                                                                <MoveRel>
                                                                       <Placement>
@@ -67,6 +255,86 @@
                                                  <NumClicks num_clicks="3" reset="true"/>
                                           </Clicks>
                                    </Actions>
+                                   <Actions>
+                                                 <TimerChange name="t1">
+                                                        <start/>
+                                                 </TimerChange>
+                                          <Clicks>
+                                                 <NumClicks num_clicks="3" reset="true"/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <TimerChange name="t1">
+                                                        <stop/>
+                                                 </TimerChange>
+                                          <Clicks>
+                                                 <NumClicks num_clicks="3" reset="true"/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <TimerChange name="t1">
+                                                        <continue/>
+                                                 </TimerChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <TimerChange name="t1">
+                                                        <start_if_not_started/>
+                                                 </TimerChange>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <SoundRef name="BAD2"/>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <Event enable="true" name="EVENT"/>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <Event enable="false" name="CVENT"/>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <MoveCave duration="3.0">
+                                                               <Absolute/>
+                                                        <Placement>
+                                                               <RelativeTo>Center</RelativeTo>
+                                                               <Position>(0.0, 0.0, 0.0)</Position>
+                                                        </Placement>
+                                                 </MoveCave>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <MoveCave duration="3.0">
+                                                               <Relative/>
+                                                        <Placement>
+                                                               <RelativeTo>Center</RelativeTo>
+                                                               <Position>(0.0, 0.0, 0.0)</Position>
+                                                        </Placement>
+                                                 </MoveCave>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
+                                   <Actions>
+                                                 <Restart/>
+                                          <Clicks>
+                                                 <Any/>
+                                          </Clicks>
+                                   </Actions>
                             </Link>
                      </LinkRoot>
               </Object>
@@ -77,6 +345,7 @@
                      <ClickThrough>false</ClickThrough>
                      <AroundSelfAxis>false</AroundSelfAxis>
                      <Scale>1.0</Scale>
+                     <SoundRef>BAD</SoundRef>
                      <Placement>
                             <RelativeTo>Center</RelativeTo>
                             <Position>(0.0, -4.0, 0.0)</Position>
@@ -115,7 +384,7 @@
                                    <Axis rotation="(1.0, 2.0, 3.0)" angle="0.0"/>
                      </Placement>
                      <Content>
-                            <ParticleSystem max-particles="1000" actions-name="1" particle-group="particalls" look-at-camera="true" sequential="false" speed="1.0"/>
+                            <ParticleSystem max-particles="1000" actions-name="P1" particle-group="particalls" look-at-camera="true" sequential="false" speed="1.0"/>
                      </Content>
               </Object>
               <Object name="o">
@@ -178,7 +447,7 @@
                             <Position>(0.0, 0.0, 0.0)</Position>
                      </Placement>
                      <Content>
-                            <Model filename="./testMedia/w.png" check-collisions="true"/>
+                            <None/>
                      </Content>
               </Object>
               <Object name="iamaLIGHT">
@@ -236,10 +505,10 @@
        <GroupRoot>
               <Group name="GROUP1">
                             <Objects name="BLARG"/>
-                            <Objects name="2"/>
               </Group>
               <Group name="GROUP2">
                             <Objects name="LINK"/>
+                            <Objects name="LINK2"/>
               </Group>
               <Group name="META?!?!">
                             <Groups name="GROUP2"/>
@@ -262,9 +531,21 @@
                             </ObjectChange>
                      </TimedActions>
                      <TimedActions seconds-time="1.0">
-                            <TimerChange name="1">
+                            <TimerChange name="t1">
                                    <stop/>
                             </TimerChange>
+                     </TimedActions>
+                     <TimedActions seconds-time="3.2">
+                            <Event enable="false" name="DVENT"/>
+                     </TimedActions>
+              </Timeline>
+              <Timeline name="T2" start-immediately="true">
+                     <TimedActions seconds-time="0.0">
+                            <ObjectChange name="o">
+                                   <Transition duration="1.0">
+                                          <Color>122,118,255</Color>
+                                   </Transition>
+                            </ObjectChange>
                      </TimedActions>
               </Timeline>
        </TimelineRoot>
@@ -325,34 +606,13 @@
               </Sound>
        </SoundRoot>
        <EventRoot>
-              <EventTrigger enabled="false" name="EVENT" duration="0.0" remain-enabled="true">
+              <EventTrigger enabled="true" name="AVENT" duration="0.0" remain-enabled="false">
                             <HeadTrack>
                                    <Position>
                                           <Anywhere/>
                                    </Position>
                                    <Direction>
-                                          <PointTarget point="(0, 0, 0)" angle="30.0"/>
-                                   </Direction>
-                            </HeadTrack>
-                     <Actions>
-                            <ObjectChange name="purteecles">
-                                   <Transition duration="1.0">
-                                          <Visible>true</Visible>
-                                   </Transition>
-                            </ObjectChange>
-                     </Actions>
-              </EventTrigger>
-              <EventTrigger enabled="true" name="CVENT" duration="0.0" remain-enabled="false">
-                            <HeadTrack>
-                                   <Position>
-                                          <Box ignore-Y="false" corner1="(1, 2, 3)" corner2="(4, 5, 6)">
-                                                 <Movement>
-                                                        <Outside/>
-                                                 </Movement>
-                                          </Box>
-                                   </Position>
-                                   <Direction>
-                                          <DirectionTarget direction="(9, 8, 7)" angle="30.0"/>
+                                          <None/>
                                    </Direction>
                             </HeadTrack>
                      <Actions>
@@ -384,12 +644,50 @@
                             </ObjectChange>
                      </Actions>
               </EventTrigger>
+              <EventTrigger enabled="true" name="CVENT" duration="0.0" remain-enabled="false">
+                            <HeadTrack>
+                                   <Position>
+                                          <Box ignore-Y="false" corner1="(1, 2, 3)" corner2="(4, 5, 6)">
+                                                 <Movement>
+                                                        <Outside/>
+                                                 </Movement>
+                                          </Box>
+                                   </Position>
+                                   <Direction>
+                                          <DirectionTarget direction="(9, 8, 7)" angle="30.0"/>
+                                   </Direction>
+                            </HeadTrack>
+                     <Actions>
+                            <ObjectChange name="purteecles">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+              </EventTrigger>
+              <EventTrigger enabled="false" name="EVENT" duration="0.0" remain-enabled="true">
+                            <HeadTrack>
+                                   <Position>
+                                          <Anywhere/>
+                                   </Position>
+                                   <Direction>
+                                          <PointTarget point="(1, 3, 4)" angle="30.0"/>
+                                   </Direction>
+                            </HeadTrack>
+                     <Actions>
+                            <ObjectChange name="purteecles">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+              </EventTrigger>
               <EventTrigger enabled="true" name="DVENT" duration="0.0" remain-enabled="false">
                             <MoveTrack>
                                    <Source>
                                           <ObjectRef name="BLARG"/>
                                    </Source>
-                                   <Box ignore-Y="true" corner1="(0, 0, 0)" corner2="(0, 0, 0)">
+                                   <Box ignore-Y="true" corner1="(0, 0, 0)" corner2="(1, 1, 1)">
                                           <Movement>
                                                  <Inside/>
                                           </Movement>
@@ -408,9 +706,9 @@
                                    <Source>
                                           <GroupObj name="GROUP1"/>
                                    </Source>
-                                   <Box ignore-Y="true" corner1="(0, 0, 0)" corner2="(0, 0, 0)">
+                                   <Box ignore-Y="true" corner1="(0, 0, 0)" corner2="(3, 3, 4)">
                                           <Movement>
-                                                 <Inside/>
+                                                 <Outside/>
                                           </Movement>
                                    </Box>
                             </MoveTrack>
@@ -421,18 +719,236 @@
                                    </Transition>
                             </ObjectChange>
                      </Actions>
+                     <Actions>
+                            <ObjectChange name="LINK2">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+                     <Actions>
+                            <ObjectChange name="SOUNDO!">
+                                   <Transition duration="1.0">
+                                          <Sound action="Play Sound"/>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+              </EventTrigger>
+              <EventTrigger enabled="true" name="GVENT" duration="0.0" remain-enabled="true">
+                            <MoveTrack>
+                                   <Source>
+                                          <GroupObj name="META?!?!" objects="Any Object"/>
+                                   </Source>
+                                   <Box ignore-Y="true" corner1="(0, 0, 0)" corner2="(3, 3, 4)">
+                                          <Movement>
+                                                 <Outside/>
+                                          </Movement>
+                                   </Box>
+                            </MoveTrack>
+                     <Actions>
+                            <ObjectChange name="purteecles">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+                     <Actions>
+                            <ObjectChange name="LINK2">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+                     <Actions>
+                            <ObjectChange name="SOUNDO!">
+                                   <Transition duration="1.0">
+                                          <Sound action="Play Sound"/>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+              </EventTrigger>
+              <EventTrigger enabled="true" name="HVENT" duration="0.0" remain-enabled="true">
+                            <MoveTrack>
+                                   <Source>
+                                          <GroupObj name="GROUP2" objects="All Objects"/>
+                                   </Source>
+                                   <Box ignore-Y="false" corner1="(0, 0, 0)" corner2="(3, 3, 4)">
+                                          <Movement>
+                                                 <Outside/>
+                                          </Movement>
+                                   </Box>
+                            </MoveTrack>
+                     <Actions>
+                            <ObjectChange name="purteecles">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+                     <Actions>
+                            <ObjectChange name="LINK2">
+                                   <Transition duration="1.0">
+                                          <Visible>true</Visible>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
+                     <Actions>
+                            <ObjectChange name="SOUNDO!">
+                                   <Transition duration="1.0">
+                                          <Sound action="Play Sound"/>
+                                   </Transition>
+                            </ObjectChange>
+                     </Actions>
               </EventTrigger>
        </EventRoot>
        <ParticleActionRoot>
-              <ParticleActionList name="1">
-                     <Source rate="2">
+              <ParticleActionList name="P1">
+                     <Source rate="1.1">
                             <ParticleDomain>
-                                   <Disc center="(0, -2, 0)" normal="(0, 1, 0)" radius="3" radius-inner="1.0"/>
+                                   <Point point="(1, 2, 3)"/>
                             </ParticleDomain>
                      </Source>
                      <Vel>
                             <ParticleDomain>
-                                   <Line p1="(0, 0, 0)" p2="(0, 1, 0)"/>
+                                   <Point point="(4, 5, 6)"/>
+                            </ParticleDomain>
+                     </Vel>
+                     <ParticleAction>
+                            <Gravity direction="(0, -1, 0)"/>
+                     </ParticleAction>
+                     <ParticleAction>
+                            <Damping direction="(7, 8, 9)" vel_low="2.1" vel_high="3.2"/>
+                     </ParticleAction>
+                     <ParticleAction>
+                            <Gravitate magnitude="1.0" epsilon="0.0010" max_radius="0.0"/>
+                     </ParticleAction>
+                     <ParticleAction>
+                            <Follow magnitude="1.0" epsilon="0.0010" max_radius="0.0"/>
+                     </ParticleAction>
+                     <ParticleAction>
+                            <MatchVel magnitude="1.0" epsilon="0.0010" max_radius="0.0"/>
+                     </ParticleAction>
+                     <ParticleAction>
+                            <OrbitPoint center="(4, 05, 061)" magnitude="1.0" epsilon="0.0010" max_radius="0.0"/>
+                     </ParticleAction>
+                     <ParticleAction>
+                            <Jet>
+                                   <ParticleDomain>
+                                          <Triangle p1="(0, 0, 0)" p2="(0, 0, 0)" p3="(0, 0, 0)"/>
+                                   </ParticleDomain>
+                                   <AccelDomain>
+                                          <Line p1="(3, 05, 03)" p2="(02, 01, 01)"/>
+                                   </AccelDomain>
+                            </Jet>
+                     </ParticleAction>
+                     <ParticleAction>
+                            <Bounce friction="3" resilience="2" cutoff="1">
+                                   <ParticleDomain>
+                                          <Plane point="(0, 0, 0)" normal="(0, 1, 0)"/>
+                                   </ParticleDomain>
+                            </Bounce>
+                     </ParticleAction>
+                     <RemoveCondition>
+                            <Age age="10" younger-than="false"/>
+                     </RemoveCondition>
+              </ParticleActionList>
+              <ParticleActionList name="P2">
+                     <Source rate="2">
+                            <ParticleDomain>
+                                   <Line p1="(0, 0, 0)" p2="(0, 0, 0)"/>
+                            </ParticleDomain>
+                     </Source>
+                     <Vel>
+                            <ParticleDomain>
+                                   <Triangle p1="(1, 2, 3)" p2="(4, 05, 06)" p3="(7, 8, 9)"/>
+                            </ParticleDomain>
+                     </Vel>
+                     <ParticleAction>
+                            <Gravity direction="(0, -1, 0)"/>
+                     </ParticleAction>
+                     <RemoveCondition>
+                            <Position inside="false">
+                                   <ParticleDomain>
+                                          <Point point="(1, 03, 05)"/>
+                                   </ParticleDomain>
+                            </Position>
+                     </RemoveCondition>
+              </ParticleActionList>
+              <ParticleActionList name="P3">
+                     <Source rate="2">
+                            <ParticleDomain>
+                                   <Plane point="(0, 0, 0)" normal="(0, 0, 1)"/>
+                            </ParticleDomain>
+                     </Source>
+                     <Vel>
+                            <ParticleDomain>
+                                   <Rect point="(0, 0, 0)" u-dir="(1, 0, 0)" v-dir="(0, 1, 0)"/>
+                            </ParticleDomain>
+                     </Vel>
+                     <ParticleAction>
+                            <Gravity direction="(0, -1, 0)"/>
+                     </ParticleAction>
+                     <RemoveCondition>
+                            <Velocity inside="false">
+                                   <ParticleDomain>
+                                          <Line p1="(0, 0, 0)" p2="(0, -6, 0)"/>
+                                   </ParticleDomain>
+                            </Velocity>
+                     </RemoveCondition>
+              </ParticleActionList>
+              <ParticleActionList name="P4">
+                     <Source rate="2">
+                            <ParticleDomain>
+                                   <Box p1="(0, 0, 0)" p2="(06, 06, 07)"/>
+                            </ParticleDomain>
+                     </Source>
+                     <Vel>
+                            <ParticleDomain>
+                                   <Sphere center="(0, 0, 0)" radius="21" radius-inner="3"/>
+                            </ParticleDomain>
+                     </Vel>
+                     <ParticleAction>
+                            <Gravity direction="(0, -1, 0)"/>
+                     </ParticleAction>
+                     <RemoveCondition>
+                            <Velocity inside="false">
+                                   <ParticleDomain>
+                                          <Line p1="(0, 0, 0)" p2="(0, -6, 0)"/>
+                                   </ParticleDomain>
+                            </Velocity>
+                     </RemoveCondition>
+              </ParticleActionList>
+              <ParticleActionList name="P5">
+                     <Source rate="2">
+                            <ParticleDomain>
+                                   <Cylinder p1="(0, 0, 0)" p2="(0, 10, 0)" radius="2" radius-inner="1"/>
+                            </ParticleDomain>
+                     </Source>
+                     <Vel>
+                            <ParticleDomain>
+                                   <Cone base-center="(0, 0, 0)" apex="(0, -3, 0)" radius="6" radius-inner="5"/>
+                            </ParticleDomain>
+                     </Vel>
+                     <ParticleAction>
+                            <Gravity direction="(0, -1, 0)"/>
+                     </ParticleAction>
+                     <RemoveCondition>
+                            <Velocity inside="false">
+                                   <ParticleDomain>
+                                          <Line p1="(0, 0, 0)" p2="(0, -6, 0)"/>
+                                   </ParticleDomain>
+                            </Velocity>
+                     </RemoveCondition>
+              </ParticleActionList>
+              <ParticleActionList name="P6">
+                     <Source rate="2">
+                            <ParticleDomain>
+                                   <Blob center="(0, 0, 0)" stdev="1.0"/>
+                            </ParticleDomain>
+                     </Source>
+                     <Vel>
+                            <ParticleDomain>
+                                   <Disc center="(0, 0, 0)" normal="(0, 1, 0)" radius="5" radius-inner="0.0"/>
                             </ParticleDomain>
                      </Vel>
                      <ParticleAction>

@@ -9,7 +9,7 @@ public class Story {
 	List<NamedPlacement> placements;
 	List<Sound> sounds;
 	List<Event> events;
-	List<ParticleAction> particleActions;
+	List<ParticleActionList> particleActionLists;
 	Global globals;
 	
 	String version;
@@ -22,7 +22,7 @@ public class Story {
 		this.placements = createDefaultPlacements();
 		this.sounds = new ArrayList<Sound>();
 		this.events = new ArrayList<Event>();
-		this.particleActions = new ArrayList<ParticleAction>();
+		this.particleActionLists = new ArrayList<ParticleActionList>();
 		this.globals = new Global(this.placements);
 		this.version = "8";
 		this.lastXpath = null;
@@ -48,14 +48,14 @@ public class Story {
 		return ret;
     }
 
-	public Story(List<StoryObject> objects, List<Group> groups, List<Timeline> timelines, List<NamedPlacement> placements, List<Sound> sounds, List<Event> events, List<ParticleAction> particleActions, Global globals, String version, String lastXpath) {
+	public Story(List<StoryObject> objects, List<Group> groups, List<Timeline> timelines, List<NamedPlacement> placements, List<Sound> sounds, List<Event> events, List<ParticleActionList> particleActionLists, Global globals, String version, String lastXpath) {
 	    this.objects = objects;
 	    this.groups = groups;
 	    this.timelines = timelines;
 	    this.placements = placements;
 	    this.sounds = sounds;
 	    this.events = events;
-	    this.particleActions = particleActions;
+	    this.particleActionLists = particleActionLists;
 	    this.globals = globals;
 	    
 	    this.version = version;
@@ -86,8 +86,8 @@ public class Story {
     	return placements;
     }
 
-	public List<ParticleAction> getParticleActions() {
-    	return particleActions;
+	public List<ParticleActionList> getParticleActionLists() {
+    	return particleActionLists;
     }
 
 	public List<Sound> getSounds() {
