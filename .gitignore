@@ -12,7 +12,6 @@ src/*.lib/build
 buildlib
 .libs
 src/G3D
-src/fmod
 src/cwapp/build
 bin/linux/cwapp
 config.log
