@@ -111,14 +111,14 @@ uses:
 ################################################################
 [DEBUG]
 
-compileoptions: -DTIXML_USE_STL %(defaultcompileoptions)s
+compileoptions: -DTIXML_USE_STL
 
-linkoptions: %(defaultlinkoptions)s
+linkoptions:
 
 ################################################################
 [RELEASE]
 
-compileoptions: -DTIXML_USE_STL %(defaultcompileoptions)s
+compileoptions: -DTIXML_USE_STL
 
-linkoptions: %(defaultlinkoptions)s
+linkoptions:
 

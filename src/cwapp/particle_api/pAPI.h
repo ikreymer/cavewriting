@@ -11,6 +11,7 @@
 
 #include "pDomain.h"
 #include <string>
+#include <typeinfo>
 
 using namespace std;
 

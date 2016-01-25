@@ -94,9 +94,9 @@
 
 compiler: %(defaultcompiler)s
 
-include: %(defaultinclude)s;$(G3DINSTALLPATH)/include;$(CWLIBPATH)/include;$(CWLIBPATH)/include/freetype2
+include: %(defaultinclude)s;$(G3DINSTALLPATH)/include;$(CWLIBPATH)/include;/usr/include/freetype2;../fmod/include
 
-library: %(defaultlibrary)s;$(G3DINSTALLPATH)/lib;$(CWLIBPATH)/lib
+library: %(defaultlibrary)s;$(G3DINSTALLPATH)/lib;$(CWLIBPATH)/lib;../fmod/lib
 
 exclude: %(defaultexclude)s
 
@@ -111,14 +111,13 @@ uses:
 ################################################################
 [DEBUG]
 
-compileoptions: -w %(defaultcompileoptions)s
+compileoptions: -DUSE_SDL -w %(defaultcompileoptions)s
 
-linkoptions: -lfreetype -lXmu %(defaultlinkoptions)s
+linkoptions: -lGLG3Dd -lG3Dd -lSDL -lfreetype -lX11 -lpthread -lzipd -lz -lGLU -lglut -lpng -ljpeg -lz -lavformat -lavcodec -lavutil
 
 ################################################################
 [RELEASE]
 
 compileoptions: -w %(defaultcompileoptions)s
 
-linkoptions: -lfreetype -lXmu %(defaultlinkoptions)s
-
+linkoptions: -lGLG3D -lG3D -lSDL -lfreetype -lX11 -lpthrea -lzipd -lz -lGLU -lglut -lpng -ljpeg -lz -lavformat -lavcodec -lavutil

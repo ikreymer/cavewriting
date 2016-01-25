@@ -94,7 +94,7 @@
 
 compiler: %(defaultcompiler)s
 
-include: %(defaultinclude)s;$(CWLIBPATH)/include;$(CWLIBPATH)/include/freetype2
+include: %(defaultinclude)s;$(CWLIBPATH)/include;/usr/include/freetype2
 
 library: %(defaultlibrary)s
 
